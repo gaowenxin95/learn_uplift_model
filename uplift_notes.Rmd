@@ -144,7 +144,9 @@ def regression_loss(concat_true, concat_pred):
 ### DESCN
 
 模型整体有两部分结构组成ESN网络+Xnetwork网络
+
 ![descn](refs/descn.png)
+
 解决的问题
 
 - 干预偏差问题 Treatment Bias： 即被干预Treatment组（实验组）和未干预Control 组（对照组）的分布是不同的。
@@ -352,4 +354,7 @@ $$
 ## 值准
 
 # 预算分配
+
+
+https://gaowenxin95.github.io/learn_uplift_model/le_uplift.html
 
