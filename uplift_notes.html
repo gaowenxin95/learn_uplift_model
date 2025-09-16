@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 模型 | 因果模型学习笔记</title>
-  <meta name="description" content="4 模型 | 因果模型学习笔记" />
+  <title>因果模型学习笔记</title>
+  <meta name="description" content="因果模型学习笔记" />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 模型 | 因果模型学习笔记" />
+  <meta property="og:title" content="因果模型学习笔记" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 模型 | 因果模型学习笔记" />
+  <meta name="twitter:title" content="因果模型学习笔记" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="基础定义.html"/>
-<link rel="next" href="treatment类型.html"/>
+
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -49,6 +49,8 @@
 
 
 
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -136,31 +138,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="le_uplift.html"><a href="le_uplift.html"><i class="fa fa-check"></i><b>1</b> le_uplift</a></li>
+<li class="chapter" data-level="1" data-path=""><a href="#le_uplift"><i class="fa fa-check"></i><b>1</b> le_uplift</a></li>
 <li class="chapter" data-level="2" data-path=""><a href="#uplift-model%E4%B8%8Eresponse-model%E5%8C%BA%E5%88%AB"><i class="fa fa-check"></i><b>2</b> uplift-model与response-model区别</a></li>
 <li class="chapter" data-level="3" data-path=""><a href="#%E5%9F%BA%E7%A1%80%E5%AE%9A%E4%B9%89"><i class="fa fa-check"></i><b>3</b> 基础定义</a></li>
 <li class="chapter" data-level="4" data-path=""><a href="#%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4</b> 模型</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="模型.html"><a href="模型.html"><i class="fa fa-check"></i><b>4.1</b> meta-learner</a>
+<li class="chapter" data-level="4.1" data-path=""><a href="#meta-learner"><i class="fa fa-check"></i><b>4.1</b> meta-learner</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="模型.html"><a href="模型.html#slearner"><i class="fa fa-check"></i><b>4.1.1</b> Slearner</a></li>
-<li class="chapter" data-level="4.1.2" data-path="模型.html"><a href="模型.html#tlearner"><i class="fa fa-check"></i><b>4.1.2</b> TLearner</a></li>
-<li class="chapter" data-level="4.1.3" data-path="模型.html"><a href="模型.html#xlearner"><i class="fa fa-check"></i><b>4.1.3</b> XLearner</a></li>
-<li class="chapter" data-level="4.1.4" data-path="模型.html"><a href="模型.html#rlearner"><i class="fa fa-check"></i><b>4.1.4</b> RLearner</a></li>
+<li class="chapter" data-level="4.1.1" data-path=""><a href="#slearner"><i class="fa fa-check"></i><b>4.1.1</b> Slearner</a></li>
+<li class="chapter" data-level="4.1.2" data-path=""><a href="#tlearner"><i class="fa fa-check"></i><b>4.1.2</b> TLearner</a></li>
+<li class="chapter" data-level="4.1.3" data-path=""><a href="#xlearner"><i class="fa fa-check"></i><b>4.1.3</b> XLearner</a></li>
+<li class="chapter" data-level="4.1.4" data-path=""><a href="#rlearner"><i class="fa fa-check"></i><b>4.1.4</b> RLearner</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="模型.html"><a href="模型.html#tree-base"><i class="fa fa-check"></i><b>4.2</b> Tree-base</a>
+<li class="chapter" data-level="4.2" data-path=""><a href="#tree-base"><i class="fa fa-check"></i><b>4.2</b> Tree-base</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="模型.html"><a href="模型.html#casusaltree"><i class="fa fa-check"></i><b>4.2.1</b> Casusaltree</a></li>
-<li class="chapter" data-level="4.2.2" data-path="模型.html"><a href="模型.html#casusalforest"><i class="fa fa-check"></i><b>4.2.2</b> CasusalForest</a></li>
-<li class="chapter" data-level="4.2.3" data-path="模型.html"><a href="模型.html#dml"><i class="fa fa-check"></i><b>4.2.3</b> DML</a></li>
-<li class="chapter" data-level="4.2.4" data-path="模型.html"><a href="模型.html#drl"><i class="fa fa-check"></i><b>4.2.4</b> DRL</a></li>
+<li class="chapter" data-level="4.2.1" data-path=""><a href="#casusaltree"><i class="fa fa-check"></i><b>4.2.1</b> Casusaltree</a></li>
+<li class="chapter" data-level="4.2.2" data-path=""><a href="#casusalforest"><i class="fa fa-check"></i><b>4.2.2</b> CasusalForest</a></li>
+<li class="chapter" data-level="4.2.3" data-path=""><a href="#dml"><i class="fa fa-check"></i><b>4.2.3</b> DML</a></li>
+<li class="chapter" data-level="4.2.4" data-path=""><a href="#drl"><i class="fa fa-check"></i><b>4.2.4</b> DRL</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4.3</b> 深度因果模型</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="模型.html"><a href="模型.html#tarnet"><i class="fa fa-check"></i><b>4.3.1</b> TARNET</a></li>
-<li class="chapter" data-level="4.3.2" data-path="模型.html"><a href="模型.html#dragonnet"><i class="fa fa-check"></i><b>4.3.2</b> Dragonnet</a></li>
-<li class="chapter" data-level="4.3.3" data-path="模型.html"><a href="模型.html#efin"><i class="fa fa-check"></i><b>4.3.3</b> EFIN</a></li>
-<li class="chapter" data-level="4.3.4" data-path="模型.html"><a href="模型.html#descn"><i class="fa fa-check"></i><b>4.3.4</b> DESCN</a></li>
+<li class="chapter" data-level="4.3.1" data-path=""><a href="#tarnet"><i class="fa fa-check"></i><b>4.3.1</b> TARNET</a></li>
+<li class="chapter" data-level="4.3.2" data-path=""><a href="#dragonnet"><i class="fa fa-check"></i><b>4.3.2</b> Dragonnet</a></li>
+<li class="chapter" data-level="4.3.3" data-path=""><a href="#efin"><i class="fa fa-check"></i><b>4.3.3</b> EFIN</a></li>
+<li class="chapter" data-level="4.3.4" data-path=""><a href="#descn"><i class="fa fa-check"></i><b>4.3.4</b> DESCN</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path=""><a href="#treatment%E7%B1%BB%E5%9E%8B"><i class="fa fa-check"></i><b>5</b> treatment类型</a>
@@ -180,9 +182,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path=""><a href="#%E8%AF%84%E4%BC%B0"><i class="fa fa-check"></i><b>8</b> 评估</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="评估.html"><a href="评估.html"><i class="fa fa-check"></i><b>8.1</b> AUUC</a></li>
-<li class="chapter" data-level="8.2" data-path="评估.html"><a href="评估.html#qini_score"><i class="fa fa-check"></i><b>8.2</b> QINI_SCORE</a></li>
-<li class="chapter" data-level="8.3" data-path="评估.html"><a href="评估.html#section"><i class="fa fa-check"></i><b>8.3</b> </a></li>
+<li class="chapter" data-level="8.1" data-path=""><a href="#auuc"><i class="fa fa-check"></i><b>8.1</b> AUUC</a></li>
+<li class="chapter" data-level="8.2" data-path=""><a href="#qini_score"><i class="fa fa-check"></i><b>8.2</b> QINI_SCORE</a></li>
+<li class="chapter" data-level="8.3" data-path=""><a href="#section"><i class="fa fa-check"></i><b>8.3</b> </a></li>
 <li class="chapter" data-level="8.4" data-path=""><a href="#%E5%BA%8F%E5%87%86"><i class="fa fa-check"></i><b>8.4</b> 序准</a></li>
 <li class="chapter" data-level="8.5" data-path=""><a href="#%E5%80%BC%E5%87%86"><i class="fa fa-check"></i><b>8.5</b> 值准</a></li>
 </ul></li>
@@ -204,41 +206,149 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">因果模型学习笔记</h1>
+<p class="author"><em>高文欣</em></p>
+<p class="date"><em>2025-09-16</em></p>
+</div>
+<div id="le_uplift" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> le_uplift<a href="#le_uplift" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>找到真正能被营销手段激励的人群，在成本有限的情况下最大化营销的总产出。
+<img src="refs/1.jpg" alt="因果图" /></p>
+<p>对人群做四象限的划分，横纵坐标分别是用户在有干预和无干预情况下的购买状况，左上角人群的购买状况在干预后发生了正向变化，如果不对这类人群进行干预，那他有可能是不购买的，但是干预之后的购买概率有极大提升，所以这类人群是我们真正想要触达的用户，即营销敏感人群。而其他人群比如第2类和第3类，在干预前后的购买状况没有变化，所以预算花费可能是浪费。右下角是一类比较特殊的人群，虽然其在干预前后的状态有跳变，但这种跳变不是我们希望看到的，因为确实有一些人群对营销是反感的，所以对这类人群我们应该极力避免触达。Uplift Model正是为了识别我们想要的营销敏感人群。</p>
+</div>
+<div id="uplift-model与response-model区别" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> uplift-model与response-model区别<a href="#uplift-model%E4%B8%8Eresponse-model%E5%8C%BA%E5%88%AB" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li>Response Model的目标是估计用户看过广告之后转化的概率，这本身是一个相关性，但这个相关性会导致我们没有办法区分出自然转化人群；</li>
+<li>Uplift Model是估计用户因为广告而购买的概率，这是一个因果推断的问题，帮助我们锁定对营销敏感的人群。所以UpliftModel是整个智能营销中非常关键的技术，预知每个用户的营销敏感程度，从而帮助我们制定营销策略，促成整个营销的效用最大化。</li>
+</ul>
+<p>举个栗子</p>
+<div class="float">
+<img src="refs/2.png" alt="模型差异" />
+<div class="figcaption">模型差异</div>
+</div>
+<blockquote>
+<p>以往经验可能会向第二类用户群投放广告，因为其转换率是最高的，但这个结论是对的吗？经过进一步分析，除了广告曝光转化率之外们还能知道这两类用户群体在没有广告触达情况下的自然转化率，从而推算出广告所带来的增量。比如第一类用户的广告转化率虽然低，但在没有广告触达情况下的转化率更低，即广告所带来的增量反而是比第二个用户更高的，而我们要最大化总体的转化率其实等价于最大化广告的增量，按照这个逻辑，我们应该向第一个用户投放广告。也就是说Response Model很有可能会误导我们做出错误的决策，Uplift Model和Response Model之所以有差异，主要在于两个模型的预测目标不一样。<a href="https://zhuanlan.zhihu.com/p/599355166">例子参考</a></p>
+</blockquote>
+<ul>
+<li>uplift模型原理</li>
+</ul>
+<p>uplift模型的本质是对cate或者het函数关系的估计，就是在于找到给定某一个<span class="math inline">\(X\)</span>的情况下，<span class="math inline">\(Y\)</span>和<span class="math inline">\(T\)</span>的真实的映射关系。</p>
+<p>机器学习模型通常是直接预测某个结果概率。Uplift模型则预测个体对干预的反应，即干预是否有效，效果如何。Uplift模型需要同时包含干预组（接受干预）和对照组（未接受干预）的数据，并且每个个体的响应变量（如购买、点击等）和干预标记（即是否接受干预）都要被记录。</p>
+<p>所以，Uplift模型要基于干预组的样本特征和标记进行一次模型训练，基于对照组的样本特征和标记也要训练一次。这个训练过程的模型，便可以采用CART树，GBDT，逻辑回归等机器学习模型。</p>
+<p>下面我们抽象出 Uplift 模型的数学表达形式，假设我们有一个二元变量T代表是否接受干预：</p>
+<ul>
+<li><p><span class="math inline">\(T=1\)</span> ：用户被干预（如收到促销短信、电话营销等）</p></li>
+<li><p><span class="math inline">\(T=0\)</span> ：用户未被干预（对照组）</p></li>
+</ul>
+<p>目标变量 <span class="math inline">\(Y\)</span> 表示用户的转化情况：</p>
+<ul>
+<li><p><span class="math inline">\(Y=1\)</span> ：用户转化（如购买）</p></li>
+<li><p><span class="math inline">\(Y=0\)</span> ：用户未转化</p></li>
+</ul>
+<p>针对构建好的预测模型，预测样本在接受干预和未接受干预情况下的结果概率。假设 <span class="math inline">\(Y_1\)</span> 是个体接受干预后的结果，<span class="math inline">\(Y_0\)</span> 是个体未接受干预时的结果。Uplift模型的目标是预测，因干预产生的增益为：</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X=x)-P(Y=1 \mid T=0, X=x)
+\]</span></p>
+<p>其中，<span class="math inline">\(X\)</span> 是个体特征。 <span class="math inline">\(P(Y=1 \mid T=1, X=x)\)</span> 是个体在接受干预时发生某一事件的概率，<span class="math inline">\(P(Y=1 \mid T=0, X=x)\)</span> 是个体在没有干预时发生该事件的概率。</p>
+<p><strong>这个公式本质，即给定某个用户特征 <span class="math inline">\(X\)</span>，在样本特征情况下，计算该用户在接受干预和未接受干预情况下的转化率差值。这个差值代表了干预的真实增量贡献。</strong></p>
+<p>Uplift 模型的核心是估计 <span class="math inline">\(P(Y=1 \mid T=1, X)\)</span> 和 <span class="math inline">\(P(Y=1 \mid T=0, X)\)</span> 之间的差异。常见建模方法主要有以下几种。</p>
+<p>（1）单模型法</p>
+<p>将干预组和对照组数据，合并在一起，训练一个模型，这时干预动作 <span class="math inline">\(T\)</span> ，也作为一个特征纳入整个训练过程。训练模型，可以选择CART，逻辑回归，GBDT等模型。模型最终进行预测输出时，对每一个样本，输出</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X)-P(Y=1 \mid T=0, X)
+\]</span></p>
+<p>作为最终Uplift计算结果值。</p>
+<p>（2）双模型法</p>
+<p>对干预组和对照组，两份数据集，分别建立两个独立的模型：</p>
+<ul>
+<li><p>模型 1 （对照组）训练目标为 <span class="math inline">\(P(Y=1 \mid T=0, X)\)</span></p></li>
+<li><p>模型 2 （干预组）训练目标为 <span class="math inline">\(P(Y=1 \mid T=1, X)\)</span></p></li>
+</ul>
+<p>两个模型训练完成后，用两个模型分别同一样本在干预和不干预的情况下进行预测，计算两者的差值 作为 Uplift 评分</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X)-P(Y=1 \mid T=0, X)
+\]</span></p>
+<p>作为最终Uplift计算结果值。</p>
+</div>
+<div id="基础定义" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> 基础定义<a href="#%E5%9F%BA%E7%A1%80%E5%AE%9A%E4%B9%89" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li><p>HTE heterogeneous treatment effect： 基于实验或者观测研究，检验不同子组样本之间的干预差异</p></li>
+<li><p>反事实结果</p></li>
+</ul>
+<p>对于个体 <span class="math inline">\(i\)</span> ，从历史数据中不可能同时观测到对该样本的两种潜在结果 <span class="math inline">\(\tau_1\)</span> 和 <span class="math inline">\(\tau_2\)</span> ，因此对于处理效应的计算无法直接通过 <span class="math inline">\(Y_i(1)-Y_i(0)\)</span> 获得</p>
+<p>在样本数据中我们观测到的结果只是个体 <span class="math inline">\(i\)</span> 获得某种处理状态后对应的潜在结果 <span class="math inline">\(Y_i\)</span> ，因此 <span class="math inline">\(Y_i\)</span> 可表示为：</p>
+<p><span class="math display">\[
+Y_i=Y_i(0)+\left[Y_i(1)-Y_i(0)\right] \times T_i
+\]</span></p>
+<p>假设总共有 <span class="math inline">\(M\)</span> 个样本，处理组 <span class="math inline">\(\left(T_i=1\right)\)</span> 内共有 <span class="math inline">\(K\)</span> 个样本，控制组 <span class="math inline">\(\left(T_i=0\right)\)</span> 内有 <span class="math inline">\(M-K\)</span> 个样本</p>
+<p>对于处理组个体，我们只能获得潜在结果 <span class="math inline">\(Y_i(1)\)</span> ，而不能获得 <span class="math inline">\(Y_i(0)\)</span> 。因果推断中，一般将未观测到的潜在结果，即与观测结果 <span class="math inline">\(Y_i\)</span> 对应的另一为观测的潜在结果称为反事实结果。也就是说，对于处理组个体，其个体观测结果和反事实结果分别为 <span class="math inline">\(Y_i=Y_i(1)\)</span> 和 <span class="math inline">\(Y_i=Y_i(0)\)</span> ；控制组则恰好相反。</p>
+<ul>
+<li>ATE：平均处理效应，如AB实验，受处理和未受处理的人群的效果的差的期望</li>
+</ul>
+<p><span class="math display">\[
+A T E=E[Y(1)-Y(0)]
+\]</span></p>
+<p>其中，<span class="math inline">\(Y(1)\)</span> 表示个体接受治疗时的潜在结果，<span class="math inline">\(Y(0)\)</span>表示个体未接受治疗时的潜在结果。ATE提供了一个总体层面上，治疗对结果影响的平均度量，不考虑个体的特征差异。例如，在研究一种新药物对所有患者的疗效时，ATE就是所有患者中，服用药物后的平均康复情况与不服用药物时的平均康复情况的差值。</p>
+<ul>
+<li><p>ATT：受处理的人群的平均处理效应，受处理的人群通过PSM方法找出和他们一样的人做为替身，看他们的效果的差别</p></li>
+<li><p>CATE：人群中某个subgroup的平均处理效应</p></li>
+</ul>
+<p>CATE（条件平均治疗效应）：考虑了个体特征<span class="math inline">\(X\)</span>，是指在具有特定特征<span class="math inline">\(X=x\)</span>的子群体中，接受治疗和未接受治疗的个体之间，结果变量的平均差异。数学表达式为：</p>
+<p><span class="math display">\[
+\operatorname{CATE}(x)=E[Y(1)-Y(0) \mid X=x]
+\]</span></p>
+<p>它反映了在给定特征 <span class="math inline">\(x\)</span> 的条件下，治疗对结果的平均影响。例如，在上述新药物研究中，CATE 可以用来分析具有特定年龄、性别、基础疾病等特征组合的患者群体，服 <span class="math inline">\({ }^{-}\)</span>物和不服用药物时康复情况的平均差异。</p>
+<ul>
+<li>ITE：个体的因果效应，也可以看成是个体的CATE</li>
+</ul>
+</div>
 <div id="模型" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">4</span> 模型<a href="#%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="meta-learner" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> meta-learner<a href="模型.html#meta-learner" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">4.1</span> meta-learner<a href="#meta-learner" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="slearner" class="section level3 hasAnchor" number="4.1.1">
-<h3><span class="header-section-number">4.1.1</span> Slearner<a href="模型.html#slearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.1.1</span> Slearner<a href="#slearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>s 顾名思义：single model，就是一个模型都搞定
 这个模型最简单，直接把treatment作为特征放进模型来预测。首先我们把 T 作为特征一起放进机器学习模型的特征， Y 是目标，然后训练一个有监督的模型 <span class="math inline">\(\mu(x)=E[Y \mid X=x, T=t]\)</span> 。然后我们改变 T 的值，就可以得到两个不同的结果，再一相减就好了：
 <span class="math display">\[\hat{\tau}(x)=\hat{\mu}(x, T=1)-\hat{\mu}(x, T=0)\]</span>
-<img src="refs/slearner.jpg" />
-优点：简单</p>
-<p>缺点：
-- 1. 本质上还是不是对 uplift 直接进行建模，因此从效果上来说还是有提升空间。
-- 2. S-Learner 倾向于将干预效果趋近于0，尤其是特征的维度非常大的时候，模型在训练的过程中极容易忽略这个干预变量。同时模型中正则化的引入，也会带来干预变量的效果稀释，正则化越强，该问题就会越大。</p>
+<img src="refs/slearner.jpg" /></p>
+<p>优点：简单</p>
+<p>缺点：</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>本质上还是不是对 uplift 直接进行建模，因此从效果上来说还是有提升空间。</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>S-Learner 倾向于将干预效果趋近于0，尤其是特征的维度非常大的时候，模型在训练的过程中极容易忽略这个干预变量。同时模型中正则化的引入，也会带来干预变量的效果稀释，正则化越强，该问题就会越大。</li>
+</ol></li>
+</ul>
 <p>代码</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"></code></pre></div>
 </div>
 <div id="tlearner" class="section level3 hasAnchor" number="4.1.2">
-<h3><span class="header-section-number">4.1.2</span> TLearner<a href="模型.html#tlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.1.2</span> TLearner<a href="#tlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>T 顾名思义：two model 需要用俩模型（可以是任何的response模型）</p>
 <p>对于 treatment 组的样本和 control 组的样本分别独立训练一个响应模型 <span class="math inline">\(\hat{\mu}_1(x)\)</span>和 <span class="math inline">\(\hat{\mu}_0(x)\)</span> 。其中 <span class="math inline">\(\hat{\mu}_1(x)\)</span> 用于拟合在施加干预的情况下响应目标 <span class="math inline">\(Y\)</span> 与特征 <span class="math inline">\(X\)</span> 的关系，即 <span class="math inline">\(\mu_1(x)=E[Y \mid W=1, X=x]\)</span> ；而 <span class="math inline">\(\hat{\mu}_0(x)\)</span> 用于拟合在未施加干预的情况下响应目标 <span class="math inline">\(Y\)</span>与特征 <span class="math inline">\(X\)</span> 的关系，即 <span class="math inline">\(\mu_0(x)=E[Y \mid W=0, X=x]\)</span> 。</p>
 <p>之后拿训练好的两个模型对于同一个样本 <span class="math inline">\(x\)</span> 的预测结果做差，就得到了 uplift 结果。</p>
 <p>最终得到的 T－Learner 表达式为 <span class="math inline">\(\hat{\tau}_T(x)=\hat{\mu}_1(x)-\hat{\mu}_0(x)\)</span>
 下面是 T－Learner 算法的示意图（参考 Causal Inference for The Brave and True 这本书，因此该图部分 notation 与上文存在差异：图中的 T 对应上文的干预 <span class="math inline">\(W\)</span> ；图中的 M1和 M 0 对应上文的响应模型 <span class="math inline">\(\hat{\mu}_1\)</span> 和 <span class="math inline">\(\hat{\mu}_0\)</span> ）<a href="https://zhuanlan.zhihu.com/p/682079211">参考</a></p>
-<div class="float">
-<img src="refs/tlearner.jpg" alt="tlearner" />
-<div class="figcaption">tlearner</div>
-</div>
+<p><img src="refs/tlearner.jpg" /></p>
 <p>优点：可以灵活地使用已有的机器学习方法。对干预和非干预样本分别建模，充分考虑了干预因素的影响。</p>
-<p>缺点：
-- 1. T-Learner 并不是直接对 uplift 进行建模，因此对 uplift 的识别能力有限。
-- 2. 考虑到其基于两个独立训练的模型进行二次处理后来对 uplift 进行预测，很容易产生两个独立模型的误差累积的问题。</p>
+<p>缺点：</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>T-Learner 并不是直接对 uplift 进行建模，因此对 uplift 的识别能力有限。</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>考虑到其基于两个独立训练的模型进行二次处理后来对 uplift 进行预测，很容易产生两个独立模型的误差累积的问题。</li>
+</ol></li>
+</ul>
 </div>
 <div id="xlearner" class="section level3 hasAnchor" number="4.1.3">
-<h3><span class="header-section-number">4.1.3</span> XLearner<a href="模型.html#xlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.1.3</span> XLearner<a href="#xlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>1．参考T-learner的思路，先对于 <span class="math inline">\(T=0\)</span> 的control组和 <span class="math inline">\(T=1\)</span> 的treatment组分别学习一个有监督的模型。
 <img src="refs/xlearner2.jpg" alt="xlearner" /></p>
 <p><span class="math display">\[
@@ -259,16 +369,16 @@ D_i^0 &amp; =\hat{\mu}^1\left(X_i^0\right)-Y_i^0
 下面是 X－Learner 算法的示意图（同样参考 Causal Inference for The Brave and True 这本书，图中 notation 与上文存在差异：图中的 T 对应上文的干预 <span class="math inline">\(W\)</span> ；图中的 M0 和 M1对应前面的模型 <span class="math inline">\(\hat{\mu}_0\)</span> 和 <span class="math inline">\(\hat{\mu}_1\)</span> ；图中的 MTAU0 和 MTAU1 对应前面的模型 <span class="math inline">\(\hat{\tau}_0\)</span> 和 <span class="math inline">\(\hat{\tau}_1\)</span> ）<a href="https://zhuanlan.zhihu.com/p/682079211">参考</a></p>
 </div>
 <div id="rlearner" class="section level3 hasAnchor" number="4.1.4">
-<h3><span class="header-section-number">4.1.4</span> RLearner<a href="模型.html#rlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.1.4</span> RLearner<a href="#rlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 </div>
 <div id="tree-base" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Tree-base<a href="模型.html#tree-base" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">4.2</span> Tree-base<a href="#tree-base" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>传统机器学习模型中，树模型主要的思路就是通过对特征点进行分裂，将X划分到一个又一个subspace中，这与补贴场景下，希望找到某一小部分增量很高的用户的想法几乎是完美重合。</p>
 <p>传统分类树模型是希望通过信息理论(information theory)中的信息熵等思想，用计算信息增益的方法去解决分类问题。而在uplift tree model中，其本质也还是想要通过衡量分裂前后的变量差值去决策是否分裂节点，不过这里的这个决策差值的计算方法不再是信息增益(information gain)，而是不同的直接对增量uplift建模的计算方法，其中包括了利用分布散度对uplift建模和直接对uplift建模。</p>
 <p>下面介绍三个Tree-Based算法，Uplift-Tree，CausalForest，CTS。</p>
 <div id="casusaltree" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Casusaltree<a href="模型.html#casusaltree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.2.1</span> Casusaltree<a href="#casusaltree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>causal tree <span class="math inline">\({ }^{+}\)</span>（honest tree）是一种直接对目标进行建模的方法，它改进了传统决策树的优化目标和指标分桶方式，以达到最大化分桶的异质性因果效应，同时调整误差的效果。</p>
 <p>首先，它会把数据分成训练集和估计集，一部分训练集去构造树，另外一部分估计集去估计因果效应和方差。</p>
 <p>传统决策树将SSE作为目标函数，而causal tree的目标函数如下：</p>
@@ -279,7 +389,7 @@ F\left(S_l\right)=N_l * \tau^2\left(S_l\right)-N_l\left(\frac{\operatorname{Var}
 <p>通俗理解构建causal tree的过程：首先将训练机划分为训练集和评估集两部分，用训练集训练生成一颗决策树，训练的目标函数同时考虑了实验效应（最大）和方差（最小）。然后用评估集来估计CATE作为该叶子结点的CATE，对于新样本将会用该CATE作为预测值。<a href="https://zhuanlan.zhihu.com/p/688168539">参考</a></p>
 </div>
 <div id="casusalforest" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> CasusalForest<a href="模型.html#casusalforest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.2.2</span> CasusalForest<a href="#casusalforest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>因果森林（Causal Forest）由 Susan Athey 和 Stefan Wager 等大牛提出（2019），本质是广义随机森林（GRF）在因果推断场景的特化应用。因果森林的核心思想在于将随机森林改造为一个专门用于估计异质性因果效应的强大工具。传统的回归树分裂准则是让数据集平均MSE最小化，因果森林是通过 uplift 增益导向的分裂准则，引导树结构主动寻找处理效应发生变化的边界，从而自适应地将样本划分为协变量和处理组／对照组都相对平衡的局部子群体（近似局部 RCT）。分裂标准表达式为：</p>
 <p><span class="math display">\[
 \Delta\left(C_1, C_2\right)=\frac{n_{C_1} n_{C_2}}{n_P^2}\left(\hat{\theta_{C_1}}-\hat{\theta_{C_2}}\right)^2
@@ -337,7 +447,7 @@ F\left(S_l\right)=N_l * \tau^2\left(S_l\right)-N_l\left(\frac{\operatorname{Var}
 </table>
 </div>
 <div id="dml" class="section level3 hasAnchor" number="4.2.3">
-<h3><span class="header-section-number">4.2.3</span> DML<a href="模型.html#dml" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.2.3</span> DML<a href="#dml" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>DML（double machine learning）是指一种用于因果推断的方法，它结合了现代机器学习技术与传统计量经济学方法，旨在从观测数据中准确估计因果效应。具体来说，double machine learning（DML）通过两个独立的预测步骤来实现这一目标：</p>
 <p>第一阶段：使用机器学习模型预测结果变量 Y 和处理变量 T 关于协变量 X 的值。这一过程涉及两个模型的训练：一个是预测Y，另一个是预测T。</p>
 <p><span class="math display">\[
@@ -372,9 +482,9 @@ DML提出直接拟合ATE，并利用残差消偏
 2．消偏，消偏指的是消除观测样本由于confounder造成的偏差。</p>
 </div>
 <div id="drl" class="section level3 hasAnchor" number="4.2.4">
-<h3><span class="header-section-number">4.2.4</span> DRL<a href="模型.html#drl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>拟合目标为 3 个模型：
-1．在给定 T 的条件下，预测 Y 的取值，即</p>
+<h3><span class="header-section-number">4.2.4</span> DRL<a href="#drl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>拟合目标为 3 个模型：</p>
+<p>1．在给定 T 的条件下，预测 Y 的取值，即</p>
 <p><span class="math display">\[
 \hat{E}\left[Y \mid T_i, X_i\right]
 \]</span></p>
@@ -407,7 +517,7 @@ DML提出直接拟合ATE，并利用残差消偏
 <div id="深度因果模型" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> 深度因果模型<a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="tarnet" class="section level3 hasAnchor" number="4.3.1">
-<h3><span class="header-section-number">4.3.1</span> TARNET<a href="模型.html#tarnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.3.1</span> TARNET<a href="#tarnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>深度因果模型的基础网络，很多后续的网络都是在此基础上拓展的.为了让神经网络学习到的表示相近，Shalit et al．（2017）提出了Treatment Agnostic Regression Network（TARNet）。它的思想很简单，神经网络整体为双头结构，然后像 multi－task一样的共享层去学习共有的信息表征 <span class="math inline">\(\phi(x)\)</span> ，再利用该共享表征去分别学习treated组和control的outcome结果。共享层其实就会在treated和control组的信息中进行tread off，从而达到一种balanced。
 简言之：TARNet前半部分用的是整个数据集，但是在后两个分支分别用的是T=0和T=1的分组数据各自训练所属的分支。</p>
 <p><img src="refs/tarnet.png" alt="tarnet" />
@@ -415,27 +525,27 @@ DML提出直接拟合ATE，并利用残差消偏
 <span class="math display">\[
 \underset{h, \Phi}{\arg \min } \frac{1}{N} \sum_{i=1}^N \operatorname{MSE}(Y_i\left(T_i\right), \underbrace{h\left(\Phi\left(X_i\right), T_i\right)}_{\hat{Y}_i\left(T_i\right)})+\lambda \underbrace{\mathcal{R}(h)}_{L_2}
 \]</span></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="模型.html#cb2-1" tabindex="-1"></a>def <span class="fu">regression_loss</span>(concat_true, concat_pred)<span class="sc">:</span></span>
-<span id="cb2-2"><a href="模型.html#cb2-2" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="模型.html#cb2-3" tabindex="-1"></a>    y_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">0</span>]</span>
-<span id="cb2-4"><a href="模型.html#cb2-4" tabindex="-1"></a>    t_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">1</span>]</span>
-<span id="cb2-5"><a href="模型.html#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="模型.html#cb2-6" tabindex="-1"></a>    y0_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">0</span>]</span>
-<span id="cb2-7"><a href="模型.html#cb2-7" tabindex="-1"></a>    y1_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">1</span>]</span>
-<span id="cb2-8"><a href="模型.html#cb2-8" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="模型.html#cb2-9" tabindex="-1"></a>    loss0 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>((<span class="fl">1.</span> <span class="sc">-</span> t_true) <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y0_pred))</span>
-<span id="cb2-10"><a href="模型.html#cb2-10" tabindex="-1"></a>    loss1 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>(t_true <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y1_pred))</span>
-<span id="cb2-11"><a href="模型.html#cb2-11" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="模型.html#cb2-12" tabindex="-1"></a>    return loss0 <span class="sc">+</span> loss1</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>def <span class="fu">regression_loss</span>(concat_true, concat_pred)<span class="sc">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    y_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">0</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    t_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">1</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    y0_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">0</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    y1_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">1</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    loss0 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>((<span class="fl">1.</span> <span class="sc">-</span> t_true) <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y0_pred))</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    loss1 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>(t_true <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y1_pred))</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    return loss0 <span class="sc">+</span> loss1</span></code></pre></div>
 </div>
 <div id="dragonnet" class="section level3 hasAnchor" number="4.3.2">
-<h3><span class="header-section-number">4.3.2</span> Dragonnet<a href="模型.html#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.3.2</span> Dragonnet<a href="#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 <div id="efin" class="section level3 hasAnchor" number="4.3.3">
-<h3><span class="header-section-number">4.3.3</span> EFIN<a href="模型.html#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.3.3</span> EFIN<a href="#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 <div id="descn" class="section level3 hasAnchor" number="4.3.4">
-<h3><span class="header-section-number">4.3.4</span> DESCN<a href="模型.html#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">4.3.4</span> DESCN<a href="#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>模型整体有两部分结构组成ESN网络+Xnetwork网络</p>
 <div class="float">
 <img src="refs/descn.png" alt="descn" />
@@ -588,13 +698,80 @@ L_{D E S C N} &amp; =L_{E S N}+\gamma_1 \cdot L_{C r o s s T R}+\gamma_0 \cdot L
 </div>
 </div>
 </div>
+<div id="treatment类型" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> treatment类型<a href="#treatment%E7%B1%BB%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="二元-treatment" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> 二元 treatment<a href="#%E4%BA%8C%E5%85%83-treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="多元treatment" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> 多元treatment<a href="#%E5%A4%9A%E5%85%83treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="连续treatment" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> 连续treatment<a href="#%E8%BF%9E%E7%BB%ADtreatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+</div>
+<div id="数据收集" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> 数据收集<a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="rct数据" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> RCT数据<a href="#rct%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="观测数据" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> 观测数据<a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+</div>
+<div id="纠偏" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> 纠偏<a href="#%E7%BA%A0%E5%81%8F" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="常见偏差" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> 常见偏差<a href="#%E5%B8%B8%E8%A7%81%E5%81%8F%E5%B7%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>归纳偏置</li>
+</ul>
+<p>对潜在结果<span class="math inline">\(Y_i(1)\)</span>和<span class="math inline">\(Y_i(0)\)</span>的预测误差，本质上是模型可以准确学习给定样本中的可泛化信息的程度</p>
+<ul>
+<li>选择（因果）偏置</li>
+</ul>
+<p>表示给定的数据中的非所及偏差可以多大程度被消除。
+由于收集数据的方式（样本选择过程）导致样本不能代表目标总体，从而使分析结论产生偏差。</p>
+<p>例子：</p>
+<p>“幸存者偏差”：二战时，军方想加固飞机。他们检查返航飞机上的弹孔，发现机翼上弹孔多，机身和尾翼上弹孔少。于是有人建议加固机翼。但统计学家沃德指出：样本只包含了“成功返航”的飞机（这就是选择机制）。那些被击中机身和尾翼的飞机很可能没能返航，所以它们的损伤情况没被记录在内。真正的结论是：应该加固弹孔少的机身和尾翼，因为这些部位中弹的飞机更可能坠毁。</p>
+<p>只在网站上对自愿填写的用户进行问卷调查，结果只能代表“愿意填写问卷的用户”这个群体，而不是全体用户。</p>
+<ul>
+<li>混淆偏置</li>
+</ul>
+<p>混淆因素是指同时影响自变量T(干预变量)和因变量Y(结果变量)的变量，它会使得我们观察到的T与Y之间的关系既包含真实的因果关系，也包含由混杂因素带来的虚假关联。</p>
+<p>例子：</p>
+<p>“冰淇淋销量越高，溺水人数越多”。这里，冰淇淋销量和溺水人数有相关性，但并非因果关系。天气温度是一个混淆变量：天热导致更多人买冰淇淋，同时也导致更多人游泳从而增加溺水风险。如果忽略“温度”，就会得出“吃冰淇淋导致溺水”的错误结论。</p>
+</div>
+</div>
+<div id="评估" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> 评估<a href="#%E8%AF%84%E4%BC%B0" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="auuc" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> AUUC<a href="#auuc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="qini_score" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> QINI_SCORE<a href="#qini_score" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="section" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> </h2>
+</div>
+<div id="序准" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> 序准<a href="#%E5%BA%8F%E5%87%86" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="值准" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> 值准<a href="#%E5%80%BC%E5%87%86" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+</div>
+<div id="预算分配" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> 预算分配<a href="#%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><a href="https://gaowenxin95.github.io/learn_uplift_model/le_uplift.html" class="uri">https://gaowenxin95.github.io/learn_uplift_model/le_uplift.html</a></p>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="基础定义.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="treatment类型.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

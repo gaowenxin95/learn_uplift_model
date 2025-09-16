@@ -2,7 +2,12 @@
 title : 因果模型学习笔记
 author: 高文欣
 date: "`r Sys.Date()`"
-output: bookdown::gitbook
+output: 
+    bookdown::gitbook:
+        split_by: none
+        split_bib: TRUE
+        df_print: paged
+
 ---
 
 
@@ -73,7 +78,9 @@ $$
 （2）双模型法
 
 对干预组和对照组，两份数据集，分别建立两个独立的模型：
+
 - 模型 1 （对照组）训练目标为 $P(Y=1 \mid T=0, X)$
+
 - 模型 2 （干预组）训练目标为 $P(Y=1 \mid T=1, X)$
 
 两个模型训练完成后，用两个模型分别同一样本在干预和不干预的情况下进行预测，计算两者的差值 作为 Uplift 评分
@@ -90,7 +97,7 @@ $$
 # 基础定义
 
 
-- HTE heterogeneous treatment effect： 基于实验或者观测研究，检验不同子组样本之间的干预差异，也就是所谓的 
+- HTE heterogeneous treatment effect： 基于实验或者观测研究，检验不同子组样本之间的干预差异
 
 
 - 反事实结果
@@ -149,10 +156,13 @@ s 顾名思义：single model，就是一个模型都搞定
 这个模型最简单，直接把treatment作为特征放进模型来预测。首先我们把 T 作为特征一起放进机器学习模型的特征， Y 是目标，然后训练一个有监督的模型 $\mu(x)=E[Y \mid X=x, T=t]$ 。然后我们改变 T 的值，就可以得到两个不同的结果，再一相减就好了：
 $$\hat{\tau}(x)=\hat{\mu}(x, T=1)-\hat{\mu}(x, T=0)$$
 ![](refs/slearner.jpg)
+
 优点：简单
 
 缺点：
+
 - 1. 本质上还是不是对 uplift 直接进行建模，因此从效果上来说还是有提升空间。
+
 - 2. S-Learner 倾向于将干预效果趋近于0，尤其是特征的维度非常大的时候，模型在训练的过程中极容易忽略这个干预变量。同时模型中正则化的引入，也会带来干预变量的效果稀释，正则化越强，该问题就会越大。
 
 代码
@@ -173,12 +183,16 @@ T 顾名思义：two model 需要用俩模型（可以是任何的response模型
 最终得到的 T－Learner 表达式为 $\hat{\tau}_T(x)=\hat{\mu}_1(x)-\hat{\mu}_0(x)$
 下面是 T－Learner 算法的示意图（参考 Causal Inference for The Brave and True 这本书，因此该图部分 notation 与上文存在差异：图中的 T 对应上文的干预 $W$ ；图中的 M1和 M 0 对应上文的响应模型 $\hat{\mu}_1$ 和 $\hat{\mu}_0$ ）[参考](https://zhuanlan.zhihu.com/p/682079211)
 
-![tlearner](refs/tlearner.jpg)
+
+![](refs/tlearner.jpg)
+
 
 优点：可以灵活地使用已有的机器学习方法。对干预和非干预样本分别建模，充分考虑了干预因素的影响。
 
 缺点：
+
 - 1. T-Learner 并不是直接对 uplift 进行建模，因此对 uplift 的识别能力有限。
+
 - 2. 考虑到其基于两个独立训练的模型进行二次处理后来对 uplift 进行预测，很容易产生两个独立模型的误差累积的问题。
 
 
@@ -304,6 +318,7 @@ $$
 
 第二阶段：计算第一阶段预测值与实际值的残差，即得到 Y 的残差和 T 的残差。这些残差去除了协变量X的影响。
 
+
 $$
 \begin{aligned}
 & \Delta Y=Y-Y^{\prime} \\
@@ -322,7 +337,73 @@ $$
 最终 $\mu(x)$ 即为输出结果。
 这种方法的核心在于构造＂正交化＂得分，即通过残差来消除协变量的混杂影响，从而实现无偏的因果效应估计。DML特别适用于高维数据和复杂非线性关系的情况，因为它能够利用灵活的机器学习模型来处理大量控制变量，同时保持估计的稳健性。将 DML里面的模型换成随机森林就是CausalForestDML。
 
+总结
+
+不同于传统的拟合Y
+DML提出直接拟合ATE，并利用残差消偏
+拟合目标
+
+$$
+\tilde{Y}_i=\tilde{T}_i * \tau\left(X_i\right)+\epsilon
+$$
+
+
+其中 $\tilde{Y}_i=Y_i-\hat{Y}_i, \tilde{T}_i=T_i-\hat{T}_i$, where $\hat{Y}_i=E\left[Y_i \mid X_i\right], \hat{T}_i=E\left[T_i \mid X_i\right]$ 目标是最小化 $|\epsilon| \tau\left(X_i\right)$ 即 ate
+
+通过cross－fitting降低偏差，样本分为不相交 $\mathrm{n}(n \geq 2)$ 份，保证估计残差和计算 $\tau\left(X_i\right)$ 的不是同一份数据为什么需要DML？
+
+1．引入学习残差的uplift模型
+2．消偏，消偏指的是消除观测样本由于confounder造成的偏差。
+
 ### DRL
+
+拟合目标为 3 个模型：
+
+1．在给定 T 的条件下，预测 Y 的取值，即
+
+
+$$
+\hat{E}\left[Y \mid T_i, X_i\right]
+$$
+
+
+2．倾向性得分
+
+$$
+\pi\left(X_i\right)=\mathbb{P}\left(T=t \mid X_i\right)
+$$
+
+
+计算 $Y_{i, t}$ ：
+
+$$
+\hat{Y}_{i, t}=\hat{E}\left[Y \mid T_i=t, X_i\right]+\frac{Y_i-\hat{E}\left[Y \mid T_i=t, X_i\right]}{\pi\left(X_i\right)} * 1\left(T_i=t\right)
+$$
+
+
+建立ate模型 $\hat{\tau}$ ：
+
+$$
+\hat{\tau}\left(X_i\right)=\hat{Y}_{i, 1}-\hat{Y}_{i, 0}
+$$
+
+
+例如通常的treatment组和control组实验，一共3个模型 $\hat{E}\left[Y \mid T_i, X_i\right], \pi\left(X_i\right), \tau\left(\hat{X}_i\right)$
+和单纯的利用IPW的方式相比，多了一重保障，即使IPW计算错误，只要 $E\left[Y_i \mid \hat{T}_i, X_i\right]$ 计算正确，也能保证结果正确，这也是double roboust的原因。
+
+取期望，化简略
+
+$$
+\begin{aligned}
+& E\left[\hat{Y}_{i, 1}-Y_1\right] \\
+= & \frac{E\left(T_i\right)-\pi\left(X_i\right)}{\pi\left(X_i\right)} *\left[E\left(Y_1\right)-\hat{E}\left[Y \mid T_i=1, X_i\right]\right]
+\end{aligned}
+$$
+
+
+当满足倾向性得分正确时前项为 0 ，当满足预测Y正确时后项为 0
+所以期望为 0
+即 $\hat{Y}_{i, 1}$ 是 $Y_1$ 的无偏估计，同理 $\hat{Y}_{i, 0}$
 
 ## 深度因果模型
 
