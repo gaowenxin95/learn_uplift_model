@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 数据收集 | 因果模型学习笔记</title>
-  <meta name="description" content="6 数据收集 | 因果模型学习笔记" />
+  <title>7 纠偏 | 因果模型学习笔记</title>
+  <meta name="description" content="7 纠偏 | 因果模型学习笔记" />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6 数据收集 | 因果模型学习笔记" />
+  <meta property="og:title" content="7 纠偏 | 因果模型学习笔记" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 数据收集 | 因果模型学习笔记" />
+  <meta name="twitter:title" content="7 纠偏 | 因果模型学习笔记" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="treatment类型.html"/>
-<link rel="next" href="纠偏.html"/>
+<link rel="prev" href="数据收集.html"/>
+<link rel="next" href="评估.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -204,13 +204,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="数据收集" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">6</span> 数据收集<a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="rct数据" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> RCT数据<a href="#rct%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="观测数据" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> 观测数据<a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="纠偏" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> 纠偏<a href="#%E7%BA%A0%E5%81%8F" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="常见偏差" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> 常见偏差<a href="#%E5%B8%B8%E8%A7%81%E5%81%8F%E5%B7%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>归纳偏置</li>
+</ul>
+<p>对潜在结果<span class="math inline">\(Y_i(1)\)</span>和<span class="math inline">\(Y_i(0)\)</span>的预测误差，本质上是模型可以准确学习给定样本中的可泛化信息的程度</p>
+<ul>
+<li>选择（因果）偏置</li>
+</ul>
+<p>表示给定的数据中的非所及偏差可以多大程度被消除。
+由于收集数据的方式（样本选择过程）导致样本不能代表目标总体，从而使分析结论产生偏差。</p>
+<p>例子：</p>
+<p>“幸存者偏差”：二战时，军方想加固飞机。他们检查返航飞机上的弹孔，发现机翼上弹孔多，机身和尾翼上弹孔少。于是有人建议加固机翼。但统计学家沃德指出：样本只包含了“成功返航”的飞机（这就是选择机制）。那些被击中机身和尾翼的飞机很可能没能返航，所以它们的损伤情况没被记录在内。真正的结论是：应该加固弹孔少的机身和尾翼，因为这些部位中弹的飞机更可能坠毁。</p>
+<p>只在网站上对自愿填写的用户进行问卷调查，结果只能代表“愿意填写问卷的用户”这个群体，而不是全体用户。</p>
+<ul>
+<li>混淆偏置</li>
+</ul>
+<p>混淆因素是指同时影响自变量T(干预变量)和因变量Y(结果变量)的变量，它会使得我们观察到的T与Y之间的关系既包含真实的因果关系，也包含由混杂因素带来的虚假关联。</p>
+<p>例子：</p>
+<p>“冰淇淋销量越高，溺水人数越多”。这里，冰淇淋销量和溺水人数有相关性，但并非因果关系。天气温度是一个混淆变量：天热导致更多人买冰淇淋，同时也导致更多人游泳从而增加溺水风险。如果忽略“温度”，就会得出“吃冰淇淋导致溺水”的错误结论。</p>
 </div>
 </div>
             </section>
@@ -218,8 +233,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="treatment类型.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="纠偏.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="数据收集.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="评估.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

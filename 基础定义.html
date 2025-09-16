@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 数据收集 | 因果模型学习笔记</title>
-  <meta name="description" content="6 数据收集 | 因果模型学习笔记" />
+  <title>3 基础定义 | 因果模型学习笔记</title>
+  <meta name="description" content="3 基础定义 | 因果模型学习笔记" />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6 数据收集 | 因果模型学习笔记" />
+  <meta property="og:title" content="3 基础定义 | 因果模型学习笔记" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 数据收集 | 因果模型学习笔记" />
+  <meta name="twitter:title" content="3 基础定义 | 因果模型学习笔记" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="treatment类型.html"/>
-<link rel="next" href="纠偏.html"/>
+<link rel="prev" href="uplift-model与response-model区别.html"/>
+<link rel="next" href="模型.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -204,22 +204,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="数据收集" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">6</span> 数据收集<a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="rct数据" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> RCT数据<a href="#rct%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="观测数据" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> 观测数据<a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
+<div id="基础定义" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> 基础定义<a href="#%E5%9F%BA%E7%A1%80%E5%AE%9A%E4%B9%89" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li><p>HTE heterogeneous treatment effect： 基于实验或者观测研究，检验不同子组样本之间的干预差异，也就是所谓的</p></li>
+<li><p>反事实结果</p></li>
+</ul>
+<p>对于个体 <span class="math inline">\(i\)</span> ，从历史数据中不可能同时观测到对该样本的两种潜在结果 <span class="math inline">\(\tau_1\)</span> 和 <span class="math inline">\(\tau_2\)</span> ，因此对于处理效应的计算无法直接通过 <span class="math inline">\(Y_i(1)-Y_i(0)\)</span> 获得</p>
+<p>在样本数据中我们观测到的结果只是个体 <span class="math inline">\(i\)</span> 获得某种处理状态后对应的潜在结果 <span class="math inline">\(Y_i\)</span> ，因此 <span class="math inline">\(Y_i\)</span> 可表示为：</p>
+<p><span class="math display">\[
+Y_i=Y_i(0)+\left[Y_i(1)-Y_i(0)\right] \times T_i
+\]</span></p>
+<p>假设总共有 <span class="math inline">\(M\)</span> 个样本，处理组 <span class="math inline">\(\left(T_i=1\right)\)</span> 内共有 <span class="math inline">\(K\)</span> 个样本，控制组 <span class="math inline">\(\left(T_i=0\right)\)</span> 内有 <span class="math inline">\(M-K\)</span> 个样本</p>
+<p>对于处理组个体，我们只能获得潜在结果 <span class="math inline">\(Y_i(1)\)</span> ，而不能获得 <span class="math inline">\(Y_i(0)\)</span> 。因果推断中，一般将未观测到的潜在结果，即与观测结果 <span class="math inline">\(Y_i\)</span> 对应的另一为观测的潜在结果称为反事实结果。也就是说，对于处理组个体，其个体观测结果和反事实结果分别为 <span class="math inline">\(Y_i=Y_i(1)\)</span> 和 <span class="math inline">\(Y_i=Y_i(0)\)</span> ；控制组则恰好相反。</p>
+<ul>
+<li>ATE：平均处理效应，如AB实验，受处理和未受处理的人群的效果的差的期望</li>
+</ul>
+<p><span class="math display">\[
+A T E=E[Y(1)-Y(0)]
+\]</span></p>
+<p>其中，<span class="math inline">\(Y(1)\)</span> 表示个体接受治疗时的潜在结果，<span class="math inline">\(Y(0)\)</span>表示个体未接受治疗时的潜在结果。ATE提供了一个总体层面上，治疗对结果影响的平均度量，不考虑个体的特征差异。例如，在研究一种新药物对所有患者的疗效时，ATE就是所有患者中，服用药物后的平均康复情况与不服用药物时的平均康复情况的差值。</p>
+<ul>
+<li><p>ATT：受处理的人群的平均处理效应，受处理的人群通过PSM方法找出和他们一样的人做为替身，看他们的效果的差别</p></li>
+<li><p>CATE：人群中某个subgroup的平均处理效应</p></li>
+</ul>
+<p>CATE（条件平均治疗效应）：考虑了个体特征<span class="math inline">\(X\)</span>，是指在具有特定特征<span class="math inline">\(X=x\)</span>的子群体中，接受治疗和未接受治疗的个体之间，结果变量的平均差异。数学表达式为：</p>
+<p><span class="math display">\[
+\operatorname{CATE}(x)=E[Y(1)-Y(0) \mid X=x]
+\]</span></p>
+<p>它反映了在给定特征 <span class="math inline">\(x\)</span> 的条件下，治疗对结果的平均影响。例如，在上述新药物研究中，CATE 可以用来分析具有特定年龄、性别、基础疾病等特征组合的患者群体，服 <span class="math inline">\({ }^{-}\)</span>物和不服用药物时康复情况的平均差异。</p>
+<ul>
+<li>ITE：个体的因果效应，也可以看成是个体的CATE</li>
+</ul>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="treatment类型.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="纠偏.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="uplift-model与response-model区别.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="模型.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

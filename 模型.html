@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 模型 | 因果模型学习笔记</title>
-  <meta name="description" content="3 模型 | 因果模型学习笔记" />
+  <title>4 模型 | 因果模型学习笔记</title>
+  <meta name="description" content="4 模型 | 因果模型学习笔记" />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 模型 | 因果模型学习笔记" />
+  <meta property="og:title" content="4 模型 | 因果模型学习笔记" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 模型 | 因果模型学习笔记" />
+  <meta name="twitter:title" content="4 模型 | 因果模型学习笔记" />
   
   
   
@@ -23,15 +23,15 @@
 <meta name="author" content="高文欣" />
 
 
-<meta name="date" content="2025-08-26" />
+<meta name="date" content="2025-09-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="uplift-model与response-model区别.html"/>
-<link rel="next" href="数据收集.html"/>
+<link rel="prev" href="基础定义.html"/>
+<link rel="next" href="treatment类型.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -138,38 +138,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="le_uplift.html"><a href="le_uplift.html"><i class="fa fa-check"></i><b>1</b> le_uplift</a></li>
 <li class="chapter" data-level="2" data-path=""><a href="#uplift-model%E4%B8%8Eresponse-model%E5%8C%BA%E5%88%AB"><i class="fa fa-check"></i><b>2</b> uplift-model与response-model区别</a></li>
-<li class="chapter" data-level="3" data-path=""><a href="#%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>3</b> 模型</a>
+<li class="chapter" data-level="3" data-path=""><a href="#%E5%9F%BA%E7%A1%80%E5%AE%9A%E4%B9%89"><i class="fa fa-check"></i><b>3</b> 基础定义</a></li>
+<li class="chapter" data-level="4" data-path=""><a href="#%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4</b> 模型</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="模型.html"><a href="模型.html"><i class="fa fa-check"></i><b>3.1</b> meta-learner</a>
+<li class="chapter" data-level="4.1" data-path="模型.html"><a href="模型.html"><i class="fa fa-check"></i><b>4.1</b> meta-learner</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="模型.html"><a href="模型.html#slearner"><i class="fa fa-check"></i><b>3.1.1</b> Slearner</a></li>
-<li class="chapter" data-level="3.1.2" data-path="模型.html"><a href="模型.html#tlearner"><i class="fa fa-check"></i><b>3.1.2</b> TLearner</a></li>
-<li class="chapter" data-level="3.1.3" data-path="模型.html"><a href="模型.html#xlearner"><i class="fa fa-check"></i><b>3.1.3</b> XLearner</a></li>
-<li class="chapter" data-level="3.1.4" data-path="模型.html"><a href="模型.html#rlearner"><i class="fa fa-check"></i><b>3.1.4</b> RLearner</a></li>
+<li class="chapter" data-level="4.1.1" data-path="模型.html"><a href="模型.html#slearner"><i class="fa fa-check"></i><b>4.1.1</b> Slearner</a></li>
+<li class="chapter" data-level="4.1.2" data-path="模型.html"><a href="模型.html#tlearner"><i class="fa fa-check"></i><b>4.1.2</b> TLearner</a></li>
+<li class="chapter" data-level="4.1.3" data-path="模型.html"><a href="模型.html#xlearner"><i class="fa fa-check"></i><b>4.1.3</b> XLearner</a></li>
+<li class="chapter" data-level="4.1.4" data-path="模型.html"><a href="模型.html#rlearner"><i class="fa fa-check"></i><b>4.1.4</b> RLearner</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path=""><a href="#%E5%9B%A0%E6%9E%9C%E6%A0%91"><i class="fa fa-check"></i><b>3.2</b> 因果树</a>
+<li class="chapter" data-level="4.2" data-path="模型.html"><a href="模型.html#tree-base"><i class="fa fa-check"></i><b>4.2</b> Tree-base</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="模型.html"><a href="模型.html#casusaltree"><i class="fa fa-check"></i><b>3.2.1</b> Casusaltree</a></li>
-<li class="chapter" data-level="3.2.2" data-path="模型.html"><a href="模型.html#casusalforest"><i class="fa fa-check"></i><b>3.2.2</b> CasusalForest</a></li>
-<li class="chapter" data-level="3.2.3" data-path="模型.html"><a href="模型.html#dml"><i class="fa fa-check"></i><b>3.2.3</b> DML</a></li>
-<li class="chapter" data-level="3.2.4" data-path="模型.html"><a href="模型.html#drl"><i class="fa fa-check"></i><b>3.2.4</b> DRL</a></li>
+<li class="chapter" data-level="4.2.1" data-path="模型.html"><a href="模型.html#casusaltree"><i class="fa fa-check"></i><b>4.2.1</b> Casusaltree</a></li>
+<li class="chapter" data-level="4.2.2" data-path="模型.html"><a href="模型.html#casusalforest"><i class="fa fa-check"></i><b>4.2.2</b> CasusalForest</a></li>
+<li class="chapter" data-level="4.2.3" data-path="模型.html"><a href="模型.html#dml"><i class="fa fa-check"></i><b>4.2.3</b> DML</a></li>
+<li class="chapter" data-level="4.2.4" data-path="模型.html"><a href="模型.html#drl"><i class="fa fa-check"></i><b>4.2.4</b> DRL</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>3.3</b> 深度因果模型</a>
+<li class="chapter" data-level="4.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4.3</b> 深度因果模型</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="模型.html"><a href="模型.html#tarnet"><i class="fa fa-check"></i><b>3.3.1</b> TARNET</a></li>
-<li class="chapter" data-level="3.3.2" data-path="模型.html"><a href="模型.html#dragonnet"><i class="fa fa-check"></i><b>3.3.2</b> Dragonnet</a></li>
-<li class="chapter" data-level="3.3.3" data-path="模型.html"><a href="模型.html#efin"><i class="fa fa-check"></i><b>3.3.3</b> EFIN</a></li>
-<li class="chapter" data-level="3.3.4" data-path="模型.html"><a href="模型.html#descn"><i class="fa fa-check"></i><b>3.3.4</b> DESCN</a></li>
+<li class="chapter" data-level="4.3.1" data-path="模型.html"><a href="模型.html#tarnet"><i class="fa fa-check"></i><b>4.3.1</b> TARNET</a></li>
+<li class="chapter" data-level="4.3.2" data-path="模型.html"><a href="模型.html#dragonnet"><i class="fa fa-check"></i><b>4.3.2</b> Dragonnet</a></li>
+<li class="chapter" data-level="4.3.3" data-path="模型.html"><a href="模型.html#efin"><i class="fa fa-check"></i><b>4.3.3</b> EFIN</a></li>
+<li class="chapter" data-level="4.3.4" data-path="模型.html"><a href="模型.html#descn"><i class="fa fa-check"></i><b>4.3.4</b> DESCN</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path=""><a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><i class="fa fa-check"></i><b>4</b> 数据收集</a></li>
-<li class="chapter" data-level="5" data-path=""><a href="#%E5%8E%BB%E5%81%8F%E5%B7%AE"><i class="fa fa-check"></i><b>5</b> 去偏差</a></li>
-<li class="chapter" data-level="6" data-path=""><a href="#%E8%AF%84%E4%BC%B0"><i class="fa fa-check"></i><b>6</b> 评估</a>
+<li class="chapter" data-level="5" data-path=""><a href="#treatment%E7%B1%BB%E5%9E%8B"><i class="fa fa-check"></i><b>5</b> treatment类型</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path=""><a href="#%E5%BA%8F%E5%87%86"><i class="fa fa-check"></i><b>6.1</b> 序准</a></li>
-<li class="chapter" data-level="6.2" data-path=""><a href="#%E5%80%BC%E5%87%86"><i class="fa fa-check"></i><b>6.2</b> 值准</a></li>
+<li class="chapter" data-level="5.1" data-path=""><a href="#%E4%BA%8C%E5%85%83-treatment"><i class="fa fa-check"></i><b>5.1</b> 二元 treatment</a></li>
+<li class="chapter" data-level="5.2" data-path=""><a href="#%E5%A4%9A%E5%85%83treatment"><i class="fa fa-check"></i><b>5.2</b> 多元treatment</a></li>
+<li class="chapter" data-level="5.3" data-path=""><a href="#%E8%BF%9E%E7%BB%ADtreatment"><i class="fa fa-check"></i><b>5.3</b> 连续treatment</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path=""><a href="#%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D"><i class="fa fa-check"></i><b>7</b> 预算分配</a></li>
+<li class="chapter" data-level="6" data-path=""><a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><i class="fa fa-check"></i><b>6</b> 数据收集</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path=""><a href="#rct%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.1</b> RCT数据</a></li>
+<li class="chapter" data-level="6.2" data-path=""><a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.2</b> 观测数据</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path=""><a href="#%E7%BA%A0%E5%81%8F"><i class="fa fa-check"></i><b>7</b> 纠偏</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path=""><a href="#%E5%B8%B8%E8%A7%81%E5%81%8F%E5%B7%AE"><i class="fa fa-check"></i><b>7.1</b> 常见偏差</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path=""><a href="#%E8%AF%84%E4%BC%B0"><i class="fa fa-check"></i><b>8</b> 评估</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="评估.html"><a href="评估.html"><i class="fa fa-check"></i><b>8.1</b> AUUC</a></li>
+<li class="chapter" data-level="8.2" data-path="评估.html"><a href="评估.html#qini_score"><i class="fa fa-check"></i><b>8.2</b> QINI_SCORE</a></li>
+<li class="chapter" data-level="8.3" data-path="评估.html"><a href="评估.html#section"><i class="fa fa-check"></i><b>8.3</b> </a></li>
+<li class="chapter" data-level="8.4" data-path=""><a href="#%E5%BA%8F%E5%87%86"><i class="fa fa-check"></i><b>8.4</b> 序准</a></li>
+<li class="chapter" data-level="8.5" data-path=""><a href="#%E5%80%BC%E5%87%86"><i class="fa fa-check"></i><b>8.5</b> 值准</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path=""><a href="#%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D"><i class="fa fa-check"></i><b>9</b> 预算分配</a></li>
 </ul>
 
       </nav>
@@ -187,12 +204,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="模型" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">3</span> 模型<a href="#%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="meta-learner" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> meta-learner<a href="模型.html#meta-learner" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="slearner" class="section level3 hasAnchor" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Slearner<a href="模型.html#slearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="模型" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> 模型<a href="#%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="meta-learner" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> meta-learner<a href="模型.html#meta-learner" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="slearner" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Slearner<a href="模型.html#slearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>s 顾名思义：single model，就是一个模型都搞定
 这个模型最简单，直接把treatment作为特征放进模型来预测。首先我们把 T 作为特征一起放进机器学习模型的特征， Y 是目标，然后训练一个有监督的模型 <span class="math inline">\(\mu(x)=E[Y \mid X=x, T=t]\)</span> 。然后我们改变 T 的值，就可以得到两个不同的结果，再一相减就好了：
 <span class="math display">\[\hat{\tau}(x)=\hat{\mu}(x, T=1)-\hat{\mu}(x, T=0)\]</span>
@@ -204,8 +221,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>代码</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"></code></pre></div>
 </div>
-<div id="tlearner" class="section level3 hasAnchor" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> TLearner<a href="模型.html#tlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="tlearner" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> TLearner<a href="模型.html#tlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>T 顾名思义：two model 需要用俩模型（可以是任何的response模型）</p>
 <p>对于 treatment 组的样本和 control 组的样本分别独立训练一个响应模型 <span class="math inline">\(\hat{\mu}_1(x)\)</span>和 <span class="math inline">\(\hat{\mu}_0(x)\)</span> 。其中 <span class="math inline">\(\hat{\mu}_1(x)\)</span> 用于拟合在施加干预的情况下响应目标 <span class="math inline">\(Y\)</span> 与特征 <span class="math inline">\(X\)</span> 的关系，即 <span class="math inline">\(\mu_1(x)=E[Y \mid W=1, X=x]\)</span> ；而 <span class="math inline">\(\hat{\mu}_0(x)\)</span> 用于拟合在未施加干预的情况下响应目标 <span class="math inline">\(Y\)</span>与特征 <span class="math inline">\(X\)</span> 的关系，即 <span class="math inline">\(\mu_0(x)=E[Y \mid W=0, X=x]\)</span> 。</p>
 <p>之后拿训练好的两个模型对于同一个样本 <span class="math inline">\(x\)</span> 的预测结果做差，就得到了 uplift 结果。</p>
@@ -220,8 +237,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 - 1. T-Learner 并不是直接对 uplift 进行建模，因此对 uplift 的识别能力有限。
 - 2. 考虑到其基于两个独立训练的模型进行二次处理后来对 uplift 进行预测，很容易产生两个独立模型的误差累积的问题。</p>
 </div>
-<div id="xlearner" class="section level3 hasAnchor" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> XLearner<a href="模型.html#xlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="xlearner" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> XLearner<a href="模型.html#xlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>1．参考T-learner的思路，先对于 <span class="math inline">\(T=0\)</span> 的control组和 <span class="math inline">\(T=1\)</span> 的treatment组分别学习一个有监督的模型。
 <img src="refs/xlearner2.jpg" alt="xlearner" /></p>
 <p><span class="math display">\[
@@ -241,29 +258,116 @@ D_i^0 &amp; =\hat{\mu}^1\left(X_i^0\right)-Y_i^0
 <p><img src="refs/xlearner.jpg" alt="xlearner" />
 下面是 X－Learner 算法的示意图（同样参考 Causal Inference for The Brave and True 这本书，图中 notation 与上文存在差异：图中的 T 对应上文的干预 <span class="math inline">\(W\)</span> ；图中的 M0 和 M1对应前面的模型 <span class="math inline">\(\hat{\mu}_0\)</span> 和 <span class="math inline">\(\hat{\mu}_1\)</span> ；图中的 MTAU0 和 MTAU1 对应前面的模型 <span class="math inline">\(\hat{\tau}_0\)</span> 和 <span class="math inline">\(\hat{\tau}_1\)</span> ）<a href="https://zhuanlan.zhihu.com/p/682079211">参考</a></p>
 </div>
-<div id="rlearner" class="section level3 hasAnchor" number="3.1.4">
-<h3><span class="header-section-number">3.1.4</span> RLearner<a href="模型.html#rlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="rlearner" class="section level3 hasAnchor" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> RLearner<a href="模型.html#rlearner" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 </div>
-<div id="因果树" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> 因果树<a href="#%E5%9B%A0%E6%9E%9C%E6%A0%91" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="casusaltree" class="section level3 hasAnchor" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Casusaltree<a href="模型.html#casusaltree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="tree-base" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Tree-base<a href="模型.html#tree-base" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>传统机器学习模型中，树模型主要的思路就是通过对特征点进行分裂，将X划分到一个又一个subspace中，这与补贴场景下，希望找到某一小部分增量很高的用户的想法几乎是完美重合。</p>
+<p>传统分类树模型是希望通过信息理论(information theory)中的信息熵等思想，用计算信息增益的方法去解决分类问题。而在uplift tree model中，其本质也还是想要通过衡量分裂前后的变量差值去决策是否分裂节点，不过这里的这个决策差值的计算方法不再是信息增益(information gain)，而是不同的直接对增量uplift建模的计算方法，其中包括了利用分布散度对uplift建模和直接对uplift建模。</p>
+<p>下面介绍三个Tree-Based算法，Uplift-Tree，CausalForest，CTS。</p>
+<div id="casusaltree" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Casusaltree<a href="模型.html#casusaltree" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>causal tree <span class="math inline">\({ }^{+}\)</span>（honest tree）是一种直接对目标进行建模的方法，它改进了传统决策树的优化目标和指标分桶方式，以达到最大化分桶的异质性因果效应，同时调整误差的效果。</p>
+<p>首先，它会把数据分成训练集和估计集，一部分训练集去构造树，另外一部分估计集去估计因果效应和方差。</p>
+<p>传统决策树将SSE作为目标函数，而causal tree的目标函数如下：</p>
+<p><span class="math display">\[
+F\left(S_l\right)=N_l * \tau^2\left(S_l\right)-N_l\left(\frac{\operatorname{Var}\left(S_l, 1\right)}{p}+\frac{\operatorname{Var}\left(S_l, 0\right)}{1-p}\right)
+\]</span></p>
+<p>其中，前半部分代表实验组的treatment effect，后半部分代表实验组和对照组的 variance。</p>
+<p>通俗理解构建causal tree的过程：首先将训练机划分为训练集和评估集两部分，用训练集训练生成一颗决策树，训练的目标函数同时考虑了实验效应（最大）和方差（最小）。然后用评估集来估计CATE作为该叶子结点的CATE，对于新样本将会用该CATE作为预测值。<a href="https://zhuanlan.zhihu.com/p/688168539">参考</a></p>
 </div>
-<div id="casusalforest" class="section level3 hasAnchor" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> CasusalForest<a href="模型.html#casusalforest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="casusalforest" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> CasusalForest<a href="模型.html#casusalforest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>因果森林（Causal Forest）由 Susan Athey 和 Stefan Wager 等大牛提出（2019），本质是广义随机森林（GRF）在因果推断场景的特化应用。因果森林的核心思想在于将随机森林改造为一个专门用于估计异质性因果效应的强大工具。传统的回归树分裂准则是让数据集平均MSE最小化，因果森林是通过 uplift 增益导向的分裂准则，引导树结构主动寻找处理效应发生变化的边界，从而自适应地将样本划分为协变量和处理组／对照组都相对平衡的局部子群体（近似局部 RCT）。分裂标准表达式为：</p>
+<p><span class="math display">\[
+\Delta\left(C_1, C_2\right)=\frac{n_{C_1} n_{C_2}}{n_P^2}\left(\hat{\theta_{C_1}}-\hat{\theta_{C_2}}\right)^2
+\]</span></p>
+<p><span class="math inline">\(P\)</span>代表决策树父节点， <span class="math inline">\(C_1\)</span>和<span class="math inline">\(C_2\)</span>是分裂后的 2 个子节点，<span class="math inline">\(\theta\)</span> 是两个子集的平均处理效应。因为两个子集中既有 <span class="math inline">\(\mathrm{T}=1\)</span> 的样本，也有 <span class="math inline">\(\mathrm{T}=0\)</span> 的样本，所以可以计算出平均处理效应，即平均增益。<span class="math inline">\(n\)</span>代表各集合的样本数目。决策树分裂要求上述表达式的值最大化。</p>
+<ul>
+<li><span class="math inline">\(\Delta\left(C_1, C_2\right)\)</span> ：表示类别 <span class="math inline">\(C_1\)</span> 和 <span class="math inline">\(C_2\)</span> 之间的＂差异值＂，是整个公式要计算的核心结果。</li>
+<li><span class="math inline">\(n_{C_1}\)</span> ：类别 <span class="math inline">\(C_1\)</span> 中的样本数量（或观测数）。</li>
+<li><span class="math inline">\(n_{C_2}\)</span> ：类别 <span class="math inline">\(C_2\)</span> 中的样本数量（或观测数）。</li>
+<li><span class="math inline">\(n_P\)</span> ：总体（或父群体、合并群体）的总样本数量（即 <span class="math inline">\(n_P=n_{C_1}+n_{C_2}\)</span> ，如果 <span class="math inline">\(C_1\)</span> 和 <span class="math inline">\(C_2\)</span> 是总体的仅有的两个子组）。</li>
+<li><span class="math inline">\(\hat{\theta}_{C_1}\)</span> ：对类别 <span class="math inline">\(C_1\)</span> 中某个参数 <span class="math inline">\(\theta\)</span> 的估计值（比如均值、处理效应、概率等，具体含义由研究场景决定）。</li>
+<li><span class="math inline">\(\hat{\theta}_{C_2}\)</span> ：对类别 <span class="math inline">\(C_2\)</span> 中参数 <span class="math inline">\(\theta\)</span> 的估计值。</li>
+</ul>
+<p>公式逻辑与意义
+公式的核心是<strong><em>组间参数差异的加权平方</em></strong>，权重由＂组样本量占总体的比例＂决定：</p>
+<ul>
+<li>分子部分：<span class="math inline">\(n_{C_1} n_{C_2}\left(\hat{\theta}_{C_1}-\hat{\theta}_{C_2}\right)^2\)</span></li>
+<li><span class="math inline">\(\left(\hat{\theta}_{C_1}-\hat{\theta}_{C_2}\right)^2\)</span> ：直接衡量两个组的参数估计值的＂平方差＂，差越大，组间差异越显著。</li>
+<li><span class="math inline">\(n_{C_1} n_{C_2}\)</span> ：是对＂组样本量＂的加权——如果某组样本量很大，会让这部分权重更高，体现＂大样本组的差异更值得关注＂ （或更能代表群体特征）。</li>
+<li>分母部分：<span class="math inline">\(n_P^2\)</span>
+对分子的 “样本量加权” 做归一化，避免因总体样本量<span class="math inline">\(n_P\)</span>过大导致 <span class="math inline">\(Δ\)</span>数值无限制膨胀，让结果更具可比性。</li>
+</ul>
+<p>传统的回归树，叶子结点预测结果是叶子结点上样本的响应变量平均值。类似的，因果树预测的结果是，叶子结点上的平均 CATE，以发优惠券为例，叶子结点预测的结果就是该节点上发券样本的平均转化率－不发券样本的平均转化率。</p>
+<p>因果森林对比随机森林的差异</p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">差异点</th>
+<th align="left">随机森林</th>
+<th align="left">因果森林</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">目标</td>
+<td align="left">目标是预测一个观测值的结果 Y（分类或回归）。<br>分裂准则（如基尼系数、信息增益、均方误差）旨在最大化节点内结果的同质性或最小化预测误差。</td>
+<td align="left">核心目标直接是估计每个个体或相似群体（叶子节点）的处理效应 <span class="math inline">\(τ(x) = E[Y(1)-Y(0) \mid X=x]\)</span>。<br>它不再直接预测 Y，而是预测 <span class="math inline">\(Y(1) - Y(0)\)</span> 这个反事实差异。<br>森林中的每一棵树都旨在构建一个能将样本划分为处理效应尽可能同质的子群体（叶子节点）的结构。</td>
+</tr>
+<tr class="even">
+<td align="left">分裂准则</td>
+<td align="left">传统分裂准则（如 MSE）在存在处理变量T时，会倾向于选择那些能同时很好预测Y且与T 相关的变量（即混杂因素）。但这会导致分裂后的子节点内，处理组和对照组在协变量分布上仍然不平衡（混杂未完全消除），从而污染了处理效应的估计。</td>
+<td align="left">因果森林的分裂准则专门设计用于最大化子节点间处理效应的异质性或最小化子节点内处理效应估计的方差，常用准则包括：<br>• 基于 CATE 差异最大化：在候选分裂点，计算分裂后左右子节点的 CATE（<span class="math inline">\(τ_L\)</span> 和 <span class="math inline">\(τ_R\)</span>）差异 <span class="math inline">\(|τ_L - τ_R|\)</span>，选择差异最大的变量和分裂点（驱动树寻找效应突变边界）；<br>• 基于负梯度（梯度提升视角）：将 CATE 估计视为优化问题，用处理效应损失函数（如均方处理效应误差）的负梯度作为伪残差，指导分裂方向以减少 CATE 估计误差。</td>
+</tr>
+<tr class="odd">
+<td align="left">集成学习与Honest Estimation</td>
+<td align="left">基于“bootstrap抽样+随机特征选择”构建多棵决策树，集成时直接对每棵树的预测结果（分类概率/回归值）取平均，无“分裂与效应估计的样本分离”设计，未针对因果效应优化无偏性。</td>
+<td align="left">1. 集成逻辑：与随机森林类似，构建数百棵“因果树”，每棵树基于随机子样本+随机特征子集训练，引入随机性以降低方差；<br>2. 双重样本利用（Honest Estimation）：<br> • 训练样本（S1）：仅用于构建树结构（决定分裂规则），不参与效应计算；<br> • 估计样本（S2）：与S1无交集（或通过Out-of-bag抽样实现），仅“落入”已训练好的树的叶子节点，用于计算该节点的效应 <span class="math inline">\(τ_{leaf}\)</span>（处理组与对照组均值差）；<br>3. 核心优势：<br> • 防过拟合：避免用同一批样本（S1）既建结构又算效应，减少噪声导致的偏差；<br> • 无偏性：满足独立性条件时，可提供渐近无偏的CATE估计；<br>4. 最终预测：新样本输入所有因果树，取各树输出的 <span class="math inline">\(τ_{leaf}\)</span> 均值（或中位数）作为最终CATE结果，集成平均提升估计稳定性。</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="dml" class="section level3 hasAnchor" number="3.2.3">
-<h3><span class="header-section-number">3.2.3</span> DML<a href="模型.html#dml" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="dml" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> DML<a href="模型.html#dml" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>DML（double machine learning）是指一种用于因果推断的方法，它结合了现代机器学习技术与传统计量经济学方法，旨在从观测数据中准确估计因果效应。具体来说，double machine learning（DML）通过两个独立的预测步骤来实现这一目标：</p>
+<p>第一阶段：使用机器学习模型预测结果变量 Y 和处理变量 T 关于协变量 X 的值。这一过程涉及两个模型的训练：一个是预测Y，另一个是预测T。</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; Y^{\prime}=f_1(X)+\varepsilon \\
+&amp; T^{\prime}=f_2(x)+\varepsilon
+\end{aligned}
+\]</span></p>
+<p>第二阶段：计算第一阶段预测值与实际值的残差，即得到 Y 的残差和 T 的残差。这些残差去除了协变量X的影响。</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \Delta Y=Y-Y^{\prime} \\
+&amp; \Delta T=T-T^{\prime}
+\end{aligned}
+\]</span></p>
+<p>回归分析：最后，对这些残差进行线性回归，以估计处理变量 T 对结果变量 Y 的因果效应。</p>
+<p><span class="math display">\[
+\Delta Y=\mu(x) * \Delta T+\varepsilon
+\]</span></p>
+<p>最终 <span class="math inline">\(\mu(x)\)</span> 即为输出结果。
+这种方法的核心在于构造＂正交化＂得分，即通过残差来消除协变量的混杂影响，从而实现无偏的因果效应估计。DML特别适用于高维数据和复杂非线性关系的情况，因为它能够利用灵活的机器学习模型来处理大量控制变量，同时保持估计的稳健性。将 DML里面的模型换成随机森林就是CausalForestDML。</p>
 </div>
-<div id="drl" class="section level3 hasAnchor" number="3.2.4">
-<h3><span class="header-section-number">3.2.4</span> DRL<a href="模型.html#drl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="drl" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> DRL<a href="模型.html#drl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 </div>
-<div id="深度因果模型" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> 深度因果模型<a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="tarnet" class="section level3 hasAnchor" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> TARNET<a href="模型.html#tarnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="深度因果模型" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> 深度因果模型<a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="tarnet" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> TARNET<a href="模型.html#tarnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>深度因果模型的基础网络，很多后续的网络都是在此基础上拓展的.为了让神经网络学习到的表示相近，Shalit et al．（2017）提出了Treatment Agnostic Regression Network（TARNet）。它的思想很简单，神经网络整体为双头结构，然后像 multi－task一样的共享层去学习共有的信息表征 <span class="math inline">\(\phi(x)\)</span> ，再利用该共享表征去分别学习treated组和control的outcome结果。共享层其实就会在treated和control组的信息中进行tread off，从而达到一种balanced。
 简言之：TARNet前半部分用的是整个数据集，但是在后两个分支分别用的是T=0和T=1的分组数据各自训练所属的分支。</p>
 <p><img src="refs/tarnet.png" alt="tarnet" />
@@ -284,14 +388,14 @@ D_i^0 &amp; =\hat{\mu}^1\left(X_i^0\right)-Y_i^0
 <span id="cb2-11"><a href="模型.html#cb2-11" tabindex="-1"></a></span>
 <span id="cb2-12"><a href="模型.html#cb2-12" tabindex="-1"></a>    return loss0 <span class="sc">+</span> loss1</span></code></pre></div>
 </div>
-<div id="dragonnet" class="section level3 hasAnchor" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> Dragonnet<a href="模型.html#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="dragonnet" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Dragonnet<a href="模型.html#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-<div id="efin" class="section level3 hasAnchor" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> EFIN<a href="模型.html#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="efin" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> EFIN<a href="模型.html#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-<div id="descn" class="section level3 hasAnchor" number="3.3.4">
-<h3><span class="header-section-number">3.3.4</span> DESCN<a href="模型.html#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="descn" class="section level3 hasAnchor" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> DESCN<a href="模型.html#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>模型整体有两部分结构组成ESN网络+Xnetwork网络</p>
 <div class="float">
 <img src="refs/descn.png" alt="descn" />
@@ -439,7 +543,8 @@ L_{D E S C N} &amp; =L_{E S N}+\gamma_1 \cdot L_{C r o s s T R}+\gamma_0 \cdot L
 \end{aligned}
 \]</span>
 效果对比
-<img src="refs/descn-res.png" /></p>
+<img src="refs/descn-res.png" />
+# 多目标多场景</p>
 </div>
 </div>
 </div>
@@ -448,8 +553,8 @@ L_{D E S C N} &amp; =L_{E S N}+\gamma_1 \cdot L_{C r o s s T R}+\gamma_0 \cdot L
           </div>
         </div>
       </div>
-<a href="uplift-model与response-model区别.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="数据收集.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="基础定义.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="treatment类型.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

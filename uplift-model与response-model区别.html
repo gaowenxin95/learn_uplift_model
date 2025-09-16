@@ -23,7 +23,7 @@
 <meta name="author" content="高文欣" />
 
 
-<meta name="date" content="2025-08-26" />
+<meta name="date" content="2025-09-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="le_uplift.html"/>
-<link rel="next" href="模型.html"/>
+<link rel="next" href="基础定义.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -138,38 +138,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="le_uplift.html"><a href="le_uplift.html"><i class="fa fa-check"></i><b>1</b> le_uplift</a></li>
 <li class="chapter" data-level="2" data-path=""><a href="#uplift-model%E4%B8%8Eresponse-model%E5%8C%BA%E5%88%AB"><i class="fa fa-check"></i><b>2</b> uplift-model与response-model区别</a></li>
-<li class="chapter" data-level="3" data-path=""><a href="#%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>3</b> 模型</a>
+<li class="chapter" data-level="3" data-path=""><a href="#%E5%9F%BA%E7%A1%80%E5%AE%9A%E4%B9%89"><i class="fa fa-check"></i><b>3</b> 基础定义</a></li>
+<li class="chapter" data-level="4" data-path=""><a href="#%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4</b> 模型</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="模型.html"><a href="模型.html"><i class="fa fa-check"></i><b>3.1</b> meta-learner</a>
+<li class="chapter" data-level="4.1" data-path="模型.html"><a href="模型.html"><i class="fa fa-check"></i><b>4.1</b> meta-learner</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="模型.html"><a href="模型.html#slearner"><i class="fa fa-check"></i><b>3.1.1</b> Slearner</a></li>
-<li class="chapter" data-level="3.1.2" data-path="模型.html"><a href="模型.html#tlearner"><i class="fa fa-check"></i><b>3.1.2</b> TLearner</a></li>
-<li class="chapter" data-level="3.1.3" data-path="模型.html"><a href="模型.html#xlearner"><i class="fa fa-check"></i><b>3.1.3</b> XLearner</a></li>
-<li class="chapter" data-level="3.1.4" data-path="模型.html"><a href="模型.html#rlearner"><i class="fa fa-check"></i><b>3.1.4</b> RLearner</a></li>
+<li class="chapter" data-level="4.1.1" data-path="模型.html"><a href="模型.html#slearner"><i class="fa fa-check"></i><b>4.1.1</b> Slearner</a></li>
+<li class="chapter" data-level="4.1.2" data-path="模型.html"><a href="模型.html#tlearner"><i class="fa fa-check"></i><b>4.1.2</b> TLearner</a></li>
+<li class="chapter" data-level="4.1.3" data-path="模型.html"><a href="模型.html#xlearner"><i class="fa fa-check"></i><b>4.1.3</b> XLearner</a></li>
+<li class="chapter" data-level="4.1.4" data-path="模型.html"><a href="模型.html#rlearner"><i class="fa fa-check"></i><b>4.1.4</b> RLearner</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path=""><a href="#%E5%9B%A0%E6%9E%9C%E6%A0%91"><i class="fa fa-check"></i><b>3.2</b> 因果树</a>
+<li class="chapter" data-level="4.2" data-path="模型.html"><a href="模型.html#tree-base"><i class="fa fa-check"></i><b>4.2</b> Tree-base</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="模型.html"><a href="模型.html#casusaltree"><i class="fa fa-check"></i><b>3.2.1</b> Casusaltree</a></li>
-<li class="chapter" data-level="3.2.2" data-path="模型.html"><a href="模型.html#casusalforest"><i class="fa fa-check"></i><b>3.2.2</b> CasusalForest</a></li>
-<li class="chapter" data-level="3.2.3" data-path="模型.html"><a href="模型.html#dml"><i class="fa fa-check"></i><b>3.2.3</b> DML</a></li>
-<li class="chapter" data-level="3.2.4" data-path="模型.html"><a href="模型.html#drl"><i class="fa fa-check"></i><b>3.2.4</b> DRL</a></li>
+<li class="chapter" data-level="4.2.1" data-path="模型.html"><a href="模型.html#casusaltree"><i class="fa fa-check"></i><b>4.2.1</b> Casusaltree</a></li>
+<li class="chapter" data-level="4.2.2" data-path="模型.html"><a href="模型.html#casusalforest"><i class="fa fa-check"></i><b>4.2.2</b> CasusalForest</a></li>
+<li class="chapter" data-level="4.2.3" data-path="模型.html"><a href="模型.html#dml"><i class="fa fa-check"></i><b>4.2.3</b> DML</a></li>
+<li class="chapter" data-level="4.2.4" data-path="模型.html"><a href="模型.html#drl"><i class="fa fa-check"></i><b>4.2.4</b> DRL</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>3.3</b> 深度因果模型</a>
+<li class="chapter" data-level="4.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4.3</b> 深度因果模型</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="模型.html"><a href="模型.html#tarnet"><i class="fa fa-check"></i><b>3.3.1</b> TARNET</a></li>
-<li class="chapter" data-level="3.3.2" data-path="模型.html"><a href="模型.html#dragonnet"><i class="fa fa-check"></i><b>3.3.2</b> Dragonnet</a></li>
-<li class="chapter" data-level="3.3.3" data-path="模型.html"><a href="模型.html#efin"><i class="fa fa-check"></i><b>3.3.3</b> EFIN</a></li>
-<li class="chapter" data-level="3.3.4" data-path="模型.html"><a href="模型.html#descn"><i class="fa fa-check"></i><b>3.3.4</b> DESCN</a></li>
+<li class="chapter" data-level="4.3.1" data-path="模型.html"><a href="模型.html#tarnet"><i class="fa fa-check"></i><b>4.3.1</b> TARNET</a></li>
+<li class="chapter" data-level="4.3.2" data-path="模型.html"><a href="模型.html#dragonnet"><i class="fa fa-check"></i><b>4.3.2</b> Dragonnet</a></li>
+<li class="chapter" data-level="4.3.3" data-path="模型.html"><a href="模型.html#efin"><i class="fa fa-check"></i><b>4.3.3</b> EFIN</a></li>
+<li class="chapter" data-level="4.3.4" data-path="模型.html"><a href="模型.html#descn"><i class="fa fa-check"></i><b>4.3.4</b> DESCN</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path=""><a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><i class="fa fa-check"></i><b>4</b> 数据收集</a></li>
-<li class="chapter" data-level="5" data-path=""><a href="#%E5%8E%BB%E5%81%8F%E5%B7%AE"><i class="fa fa-check"></i><b>5</b> 去偏差</a></li>
-<li class="chapter" data-level="6" data-path=""><a href="#%E8%AF%84%E4%BC%B0"><i class="fa fa-check"></i><b>6</b> 评估</a>
+<li class="chapter" data-level="5" data-path=""><a href="#treatment%E7%B1%BB%E5%9E%8B"><i class="fa fa-check"></i><b>5</b> treatment类型</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path=""><a href="#%E5%BA%8F%E5%87%86"><i class="fa fa-check"></i><b>6.1</b> 序准</a></li>
-<li class="chapter" data-level="6.2" data-path=""><a href="#%E5%80%BC%E5%87%86"><i class="fa fa-check"></i><b>6.2</b> 值准</a></li>
+<li class="chapter" data-level="5.1" data-path=""><a href="#%E4%BA%8C%E5%85%83-treatment"><i class="fa fa-check"></i><b>5.1</b> 二元 treatment</a></li>
+<li class="chapter" data-level="5.2" data-path=""><a href="#%E5%A4%9A%E5%85%83treatment"><i class="fa fa-check"></i><b>5.2</b> 多元treatment</a></li>
+<li class="chapter" data-level="5.3" data-path=""><a href="#%E8%BF%9E%E7%BB%ADtreatment"><i class="fa fa-check"></i><b>5.3</b> 连续treatment</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path=""><a href="#%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D"><i class="fa fa-check"></i><b>7</b> 预算分配</a></li>
+<li class="chapter" data-level="6" data-path=""><a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><i class="fa fa-check"></i><b>6</b> 数据收集</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path=""><a href="#rct%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.1</b> RCT数据</a></li>
+<li class="chapter" data-level="6.2" data-path=""><a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.2</b> 观测数据</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path=""><a href="#%E7%BA%A0%E5%81%8F"><i class="fa fa-check"></i><b>7</b> 纠偏</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path=""><a href="#%E5%B8%B8%E8%A7%81%E5%81%8F%E5%B7%AE"><i class="fa fa-check"></i><b>7.1</b> 常见偏差</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path=""><a href="#%E8%AF%84%E4%BC%B0"><i class="fa fa-check"></i><b>8</b> 评估</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="评估.html"><a href="评估.html"><i class="fa fa-check"></i><b>8.1</b> AUUC</a></li>
+<li class="chapter" data-level="8.2" data-path="评估.html"><a href="评估.html#qini_score"><i class="fa fa-check"></i><b>8.2</b> QINI_SCORE</a></li>
+<li class="chapter" data-level="8.3" data-path="评估.html"><a href="评估.html#section"><i class="fa fa-check"></i><b>8.3</b> </a></li>
+<li class="chapter" data-level="8.4" data-path=""><a href="#%E5%BA%8F%E5%87%86"><i class="fa fa-check"></i><b>8.4</b> 序准</a></li>
+<li class="chapter" data-level="8.5" data-path=""><a href="#%E5%80%BC%E5%87%86"><i class="fa fa-check"></i><b>8.5</b> 值准</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path=""><a href="#%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D"><i class="fa fa-check"></i><b>9</b> 预算分配</a></li>
 </ul>
 
       </nav>
@@ -201,6 +218,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote>
 <p>以往经验可能会向第二类用户群投放广告，因为其转换率是最高的，但这个结论是对的吗？经过进一步分析，除了广告曝光转化率之外们还能知道这两类用户群体在没有广告触达情况下的自然转化率，从而推算出广告所带来的增量。比如第一类用户的广告转化率虽然低，但在没有广告触达情况下的转化率更低，即广告所带来的增量反而是比第二个用户更高的，而我们要最大化总体的转化率其实等价于最大化广告的增量，按照这个逻辑，我们应该向第一个用户投放广告。也就是说Response Model很有可能会误导我们做出错误的决策，Uplift Model和Response Model之所以有差异，主要在于两个模型的预测目标不一样。<a href="https://zhuanlan.zhihu.com/p/599355166">例子参考</a></p>
 </blockquote>
+<ul>
+<li>uplift模型原理</li>
+</ul>
+<p>uplift模型的本质是对cate或者het函数关系的估计，就是在于找到给定某一个<span class="math inline">\(X\)</span>的情况下，<span class="math inline">\(Y\)</span>和<span class="math inline">\(T\)</span>的真实的映射关系。</p>
+<p>机器学习模型通常是直接预测某个结果概率。Uplift模型则预测个体对干预的反应，即干预是否有效，效果如何。Uplift模型需要同时包含干预组（接受干预）和对照组（未接受干预）的数据，并且每个个体的响应变量（如购买、点击等）和干预标记（即是否接受干预）都要被记录。</p>
+<p>所以，Uplift模型要基于干预组的样本特征和标记进行一次模型训练，基于对照组的样本特征和标记也要训练一次。这个训练过程的模型，便可以采用CART树，GBDT，逻辑回归等机器学习模型。</p>
+<p>下面我们抽象出 Uplift 模型的数学表达形式，假设我们有一个二元变量T代表是否接受干预：</p>
+<ul>
+<li><p><span class="math inline">\(T=1\)</span> ：用户被干预（如收到促销短信、电话营销等）</p></li>
+<li><p><span class="math inline">\(T=0\)</span> ：用户未被干预（对照组）</p></li>
+</ul>
+<p>目标变量 <span class="math inline">\(Y\)</span> 表示用户的转化情况：</p>
+<ul>
+<li><p><span class="math inline">\(Y=1\)</span> ：用户转化（如购买）</p></li>
+<li><p><span class="math inline">\(Y=0\)</span> ：用户未转化</p></li>
+</ul>
+<p>针对构建好的预测模型，预测样本在接受干预和未接受干预情况下的结果概率。假设 <span class="math inline">\(Y_1\)</span> 是个体接受干预后的结果，<span class="math inline">\(Y_0\)</span> 是个体未接受干预时的结果。Uplift模型的目标是预测，因干预产生的增益为：</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X=x)-P(Y=1 \mid T=0, X=x)
+\]</span></p>
+<p>其中，<span class="math inline">\(X\)</span> 是个体特征。 <span class="math inline">\(P(Y=1 \mid T=1, X=x)\)</span> 是个体在接受干预时发生某一事件的概率，<span class="math inline">\(P(Y=1 \mid T=0, X=x)\)</span> 是个体在没有干预时发生该事件的概率。</p>
+<p><strong>这个公式本质，即给定某个用户特征 <span class="math inline">\(X\)</span>，在样本特征情况下，计算该用户在接受干预和未接受干预情况下的转化率差值。这个差值代表了干预的真实增量贡献。</strong></p>
+<p>Uplift 模型的核心是估计 <span class="math inline">\(P(Y=1 \mid T=1, X)\)</span> 和 <span class="math inline">\(P(Y=1 \mid T=0, X)\)</span> 之间的差异。常见建模方法主要有以下几种。</p>
+<p>（1）单模型法</p>
+<p>将干预组和对照组数据，合并在一起，训练一个模型，这时干预动作 <span class="math inline">\(T\)</span> ，也作为一个特征纳入整个训练过程。训练模型，可以选择CART，逻辑回归，GBDT等模型。模型最终进行预测输出时，对每一个样本，输出</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X)-P(Y=1 \mid T=0, X)
+\]</span></p>
+<p>作为最终Uplift计算结果值。</p>
+<p>（2）双模型法</p>
+<p>对干预组和对照组，两份数据集，分别建立两个独立的模型：
+- 模型 1 （对照组）训练目标为 <span class="math inline">\(P(Y=1 \mid T=0, X)\)</span>
+- 模型 2 （干预组）训练目标为 <span class="math inline">\(P(Y=1 \mid T=1, X)\)</span></p>
+<p>两个模型训练完成后，用两个模型分别同一样本在干预和不干预的情况下进行预测，计算两者的差值 作为 Uplift 评分</p>
+<p><span class="math display">\[
+\operatorname{Uplift}(x)=P(Y=1 \mid T=1, X)-P(Y=1 \mid T=0, X)
+\]</span></p>
+<p>作为最终Uplift计算结果值。</p>
 </div>
             </section>
 
@@ -208,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="le_uplift.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="模型.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="基础定义.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
