@@ -144,6 +144,22 @@ $$
 
 - ITE：个体的因果效应，也可以看成是个体的CATE
 
+- PSM：通过 “剔除不匹配的样本、保留匹配对” 来平衡协变量，本质是 “选择样本”
+
+
+$$
+\begin{gathered}
+\text { weight }=\frac{T}{\pi(x)}+\frac{1-T}{1-\pi(x)} \\
+A T E=E\left\{\frac{T_i Y_i}{\pi\left(X_i\right)}\right\}-E\left\{\frac{\left(1-T_i\right) Y_i}{1-\pi\left(X_i\right)}\right\}
+\end{gathered}
+$$
+
+- IPW：通过 “给每个样本赋予权重（处理组权重 1/π(X)，对照组权重 1/(1-π(X))）” 来平衡协变量，本质是“加权调整样本贡献”，不剔除样本，因此规避了 PSM “样本量损失” 和 “匹配粗细矛盾” 的问题。
+
+$$
+\text { weight }=\frac{T}{\pi(x)}+\frac{1-T}{1-\pi(x)}
+$$
+
 
 # 模型
 
@@ -237,7 +253,6 @@ $$
 
 传统分类树模型是希望通过信息理论(information theory)中的信息熵等思想，用计算信息增益的方法去解决分类问题。而在uplift tree model中，其本质也还是想要通过衡量分裂前后的变量差值去决策是否分裂节点，不过这里的这个决策差值的计算方法不再是信息增益(information gain)，而是不同的直接对增量uplift建模的计算方法，其中包括了利用分布散度对uplift建模和直接对uplift建模。
 
-下面介绍三个Tree-Based算法，Uplift-Tree，CausalForest，CTS。
 
 ### Casusaltree
 
@@ -357,53 +372,92 @@ $$
 
 ### DRL
 
-拟合目标为 3 个模型：
+在 DR－Learner（双重稳健学习）中，构造Pseudo－outcome（伪结果）$\hat{\varphi}\left(Z_i\right)$ 是实现＂双重稳健性＂的核心步骤，其本质是通过整合＂倾向得分加权＂与＂结果模型预测＂，生成一个能用于估计个体处理效应（ITE）的中间变量，具体可从定义、构成逻辑、作用及后续应用四方面理解：
 
-1．在给定 T 的条件下，预测 Y 的取值，即
+一、Pseudo－outcome $\hat{\varphi}\left(Z_i\right)$ 的定义与构成
 
-
-$$
-\hat{E}\left[Y \mid T_i, X_i\right]
-$$
-
-
-2．倾向性得分
+根据文档中式（2），伪结果 $\hat{\varphi}\left(Z_i\right)$ 的计算公式为：
 
 $$
-\pi\left(X_i\right)=\mathbb{P}\left(T=t \mid X_i\right)
+\widehat{\varphi}\left(Z_i\right)=\left(\frac{T_i\left(Y_i-\hat{\mu}_1\left(X_i\right)\right)}{\hat{\pi}\left(X_i\right)}+\hat{\mu}_1\left(X_i\right)\right)-\left(\frac{\left(1-T_i\right)\left(Y_i-\hat{\mu}_0\left(X_i\right)\right)}{1-\hat{\pi}\left(X_i\right)}+\hat{\mu}_0\left(X_i\right)\right)
 $$
 
 
-计算 $Y_{i, t}$ ：
+其中各符号的含义需结合 DR－Learner 的前期准备步骤（文档 Step 1）理解：
+
+- $Z_i=\left(X_i, T_i, Y_i\right)$ ：第 $i$ 个样本的完整数据，包含协变量 $X_i$ 、处理状态 $T_i(1=$ 接受处理， $0=$ 未接受处理 $)$ 、结果变量 $Y_i$ ；
+
+- $\hat{\pi}\left(X_i\right)$ ：基于部分数据集（如 $D_1^n$ ）估计的倾向得分，即＂给定 $X_i$ 时 $T_i=1$ 的概率＂；
+
+- $\hat{\mu}_1\left(X_i\right) 、 \hat{\mu}_0\left(X_i\right)$ ：同样基于 $D_1^n$ 估计的结果模型，分别表示＂给定 $X_i$ 且 $T=1$ 时 $Y$ 的条件期望＂$\left(\mathbb{E}\left(Y \mid T=1, X_i\right)\right)$ 和＂给定 $X_i$ 且 $T=0$ 时 $Y$ 的条件期望＂$\left(\mathbb{E}\left(Y \mid T=0, X_i\right)\right)$ 。
+
+从公式结构看，$\hat{\varphi}\left(Z_i\right)$ 由两部分差值构成：减号左侧对应＂处理组视角的调整后结果＂，右侧对应＂对照组视角的调整后结果＂，差值直接反映了＂基于当前样本特征 $X_i$ 的处理效应估计＂。
+
+二、构造逻辑：整合两种去偏思路，实现双重稳健
+
+伪结果的核心设计逻辑，是将 DR－Learner 的＂双重稳健＂理念嵌入计算过程——它同时融合了＂倾向得分加权（IPW）＂和＂回归调整（RA）＂两种去偏思路，确保即使其中一种思路的模型（倾向得分模型 $\hat{\pi}$ 或结果模型 $\hat{\mu}$ ）存在偏差，另一种思路仍能保证估计的有效性，具体拆解如下：
+
+1．减号左侧：处理组视角的调整（对应 $T=1$ 的情况）
+左侧表达式 $\frac{T_i\left(Y_i-\hat{\mu}_1\left(X_i\right)\right)}{\hat{\pi}\left(X_i\right)}+\hat{\mu}_1\left(X_i\right)$ 可拆分为两部分：
+
+- 第一部分 $\frac{T_i\left(Y_i-\hat{\mu}_1\left(X_i\right)\right)}{\hat{\pi}\left(X_i\right)}$ ：本质是＂倾向得分加权的残差项＂——用 $\hat{\pi}\left(X_i\right)$ 对＂实际结果 $Y_i$ 与结果模型预测值 $\hat{\mu}_1\left(X_i\right)$ 的残差＂加权，这一步延续了 IPW＂通过权重平衡协变量分布＂的思路；
+
+第二部分 $\hat{\mu}_1\left(X_i\right)$ ：是结果模型对＂$T=1$ 时 $Y$ 的预测值＂，代表＂回归调整＂的思路，直接利用协变量 $X_i$ 预测处理组的潜在结果。
+
+两者相加后，左侧整体近似＂处理组的真实潜在结果估计值＂（即 $\mathbb{E}\left(Y \mid T=1, X_i\right)$ ）。
+
+2．减号右侧：对照组视角的调整（对应 $T=0$ 的情况）
+右侧表达式 $\frac{\left(1-T_i\right)\left(Y_i-\hat{\mu}_0\left(X_i\right)\right)}{1-\hat{\pi}\left(X_i\right)}+\hat{\mu}_0\left(X_i\right)$ 与左侧逻辑对称：
+
+
+- 第一部分 $\frac{\left(1-T_i\right)\left(Y_i-\hat{\mu}_0\left(X_i\right)\right)}{1-\hat{\pi}\left(X_i\right)}$ ：用＂1－倾向得分＂对对照组的残差加权，平衡对照组的协变量分布； 
+
+- 第二部分 $\hat{\mu}_0\left(X_i\right)$ ：结果模型对＂$T=0$ 时 $Y$ 的预测值＂，即 $\mathbb{E}\left(Y \mid T=0, X_i\right)$ 。
+
+两者相加后，右侧整体近似＂对照组的真实潜在结果估计值＂。
+
+3．差值的意义：直接关联 ITE
+由于＂个体处理效应（ITE）＂的定义是＂处理组潜在结果与对照组潜在结果的差值＂ $\left.\tau\left(X_i\right)=\mathbb{E}\left(Y \mid T=1, X_i\right)-\mathbb{E}\left(Y \mid T=0, X_i\right)\right)$ ，因此 $\hat{\varphi}\left(Z_i\right)$ 作为＂处理组与对照组调整后结果的差值＂，天然成为ITE 的直接估计载体——这也是其被称为＂伪结果＂的核心原因：它并非真实观测到的结果，而是为了估计ITE构造的＂中间替代结果＂。
+
+三、简化形式：更清晰的稳健性体现
+为进一步凸显稳健性逻辑，文档将式（2）简化为式（3）：
 
 $$
-\hat{Y}_{i, t}=\hat{E}\left[Y \mid T_i=t, X_i\right]+\frac{Y_i-\hat{E}\left[Y \mid T_i=t, X_i\right]}{\pi\left(X_i\right)} * 1\left(T_i=t\right)
+\widehat{\varphi}\left(Z_i\right)=\frac{T-\hat{\pi}\left(X_i\right)}{\hat{\pi}\left(X_i\right)\left\{1-\hat{\pi}\left(X_i\right)\right\}}\left\{Y-\hat{\mu}_T\left(X_i\right)\right\}+\hat{\mu}_1\left(X_i\right)-\hat{\mu}_0\left(X_i\right)
 $$
 
 
-建立ate模型 $\hat{\tau}$ ：
+其中 $\hat{\mu}_T\left(X_i\right)$ 是＂与样本实际处理状态匹配的结果模型预测值＂（即 $T=1$ 时取 $\hat{\mu}_1\left(X_i\right), T=0$ 时取 $\hat{\mu}_0\left(X_i\right)$ ）。
 
-$$
-\hat{\tau}\left(X_i\right)=\hat{Y}_{i, 1}-\hat{Y}_{i, 0}
-$$
+简化后公式更清晰地展现了＂双重稳健＂的本质：
 
+- 若倾向得分模型 $\hat{\pi}\left(X_i\right)$ 准确（即 $\hat{\pi}\left(X_i\right) \approx \pi\left(X_i\right)$ ），则 $\frac{T-\hat{\pi}\left(X_i\right)}{\hat{\pi}\left(X_i\right)\left\{1-\hat{\pi}\left(X_i\right)\right\}}\left\{Y-\hat{\mu}_T\left(X_i\right)\right\}$ 项近似为 0，此时 $\hat{\varphi}\left(Z_i\right) \approx \hat{\mu}_1\left(X_i\right)-\hat{\mu}_0\left(X_i\right)$ ，仅依赖结果模型即可实现有效估计；
 
-例如通常的treatment组和control组实验，一共3个模型 $\hat{E}\left[Y \mid T_i, X_i\right], \pi\left(X_i\right), \tau\left(\hat{X}_i\right)$
-和单纯的利用IPW的方式相比，多了一重保障，即使IPW计算错误，只要 $E\left[Y_i \mid \hat{T}_i, X_i\right]$ 计算正确，也能保证结果正确，这也是double roboust的原因。
-
-取期望，化简略
-
-$$
-\begin{aligned}
-& E\left[\hat{Y}_{i, 1}-Y_1\right] \\
-= & \frac{E\left(T_i\right)-\pi\left(X_i\right)}{\pi\left(X_i\right)} *\left[E\left(Y_1\right)-\hat{E}\left[Y \mid T_i=1, X_i\right]\right]
-\end{aligned}
-$$
+- 若结果模型 $\hat{\mu}_T\left(X_i\right)$ 准确（即 $\hat{\mu}_T\left(X_i\right) \approx \mathbb{E}\left(Y \mid T, X_i\right)$ ），则 $\left\{Y-\hat{\mu}_T\left(X_i\right)\right\}$ 项近似为 0 ，此时 $\hat{\varphi}\left(Z_i\right)$ 的核心由倾向得分加权项主导，仅依赖倾向得分模型也可实现有效估计。
 
 
-当满足倾向性得分正确时前项为 0 ，当满足预测Y正确时后项为 0
-所以期望为 0
-即 $\hat{Y}_{i, 1}$ 是 $Y_1$ 的无偏估计，同理 $\hat{Y}_{i, 0}$
+![](refs/DRL1.png)
+![](refs/DRL2.png)
+![](refs/drl3.png)
+![](refs/drl4.png)
+![](refs/DRL5.png)
+
+
+这种＂两种模型只需一个准确＂的特性，正是伪结果能让 DR－Learner 具备＂双重稳健性＂的关键。
+四、Pseudo－outcome 的后续应用：估计 ITE 与 ATE
+构造伪结果 $\hat{\varphi}\left(Z_i\right)$ 后，需结合文档中提到的＂交叉拟合（Cross－fitting）＂流程完成最终的效应估计：
+
+1．生成全样本伪结果：先用 $D_1^n$ 训练 $\hat{\pi} 、 \hat{\mu}_1 、 \hat{\mu}_0$ ，对 $D_2^n$ 计算 $\hat{\varphi}\left(Z_i\right)$ ；再交换数据集角色（用 $D_2^n$ 训练模型，对 $D_1^n$ 计算 $\hat{\varphi}\left(Z_i\right)$ ），最终得到所有样本的伪结果；
+
+2．估计 ITE：有两种方式——直接将 $\hat{\varphi}\left(Z_i\right)$ 作为 ITE 的粗估计，或基于协变量 $X$ 对 $\hat{\varphi}\left(Z_i\right)$ 拟合回归模型，得到更精准的 ITE 预估函数 $\hat{\tau}(X)$（即 $\hat{\tau}(X)=\mathbb{E}\{\hat{\varphi}(Z) \mid X=x\}$ ）；
+
+3．估计 ATE：将全样本的 $\hat{\varphi}\left(Z_i\right)$ 取平均值，即可得到平均处理效应（ATE）的估计，这也与文档中后续提到的 ATE 表达式（式 4）逻辑一致。
+
+综上，Pseudo－outcome $\hat{\varphi}\left(Z_i\right)$ 是 DR－Learner 连接＂模型训练＂与＂效应估计＂的核心桥梁：它通过整合两种去偏思路实现双重稳健，既解决了单一模型（如 IPW 仅依赖倾向得分、回归调整仅依赖结果模型）的脆弱性，又为 ITE／ATE 的估计提供了直接且可靠的中间变量。
+
+
+
+
 
 ## 深度因果模型
 
