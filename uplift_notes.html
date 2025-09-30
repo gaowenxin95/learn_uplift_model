@@ -23,7 +23,7 @@
 <meta name="author" content="高文欣" />
 
 
-<meta name="date" content="2025-09-24" />
+<meta name="date" content="2025-09-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,12 +169,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path=""><a href="#%E4%BA%8C%E5%85%83-treatment"><i class="fa fa-check"></i><b>5.1</b> 二元 treatment</a></li>
 <li class="chapter" data-level="5.2" data-path=""><a href="#%E5%A4%9A%E5%85%83treatment"><i class="fa fa-check"></i><b>5.2</b> 多元treatment</a></li>
-<li class="chapter" data-level="5.3" data-path=""><a href="#%E8%BF%9E%E7%BB%ADtreatment"><i class="fa fa-check"></i><b>5.3</b> 连续treatment</a></li>
+<li class="chapter" data-level="5.3" data-path=""><a href="#oridinal-treatment"><i class="fa fa-check"></i><b>5.3</b> oridinal treatment</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path=""><a href="#%E5%8D%95%E8%B0%83%E6%80%A7%E7%BA%A6%E6%9D%9F"><i class="fa fa-check"></i><b>5.3.1</b> 单调性约束</a></li>
+<li class="chapter" data-level="5.3.2" data-path=""><a href="#%E5%B9%B3%E6%BB%91%E6%80%A7%E7%BA%A6%E6%9D%9F"><i class="fa fa-check"></i><b>5.3.2</b> 平滑性约束</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path=""><a href="#continuous-treatment"><i class="fa fa-check"></i><b>5.4</b> continuous treatment</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path=""><a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><i class="fa fa-check"></i><b>6</b> 数据收集</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path=""><a href="#rct%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.1</b> RCT数据</a></li>
-<li class="chapter" data-level="6.2" data-path=""><a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.2</b> 观测数据</a></li>
+<li class="chapter" data-level="6.2" data-path=""><a href="#ob%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>6.2</b> OB观测数据</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path=""><a href="#%E7%BA%A0%E5%81%8F"><i class="fa fa-check"></i><b>7</b> 纠偏</a>
 <ul>
@@ -220,12 +225,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">因果模型学习笔记</h1>
 <p class="author"><em>高文欣</em></p>
-<p class="date"><em>2025-09-24</em></p>
+<p class="date"><em>2025-09-30</em></p>
 </div>
 <div id="le_uplift" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> le_uplift<a href="#le_uplift" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>找到真正能被营销手段激励的人群，在成本有限的情况下最大化营销的总产出。
-<img src="refs/1.jpg" alt="因果图" /></p>
+<p>找到真正能被营销手段激励的人群，在成本有限的情况下最大化营销的总产出。</p>
+<div class="float">
+<img src="refs/1.jpg" alt="因果图" />
+<div class="figcaption">因果图</div>
+</div>
 <p>对人群做四象限的划分，横纵坐标分别是用户在有干预和无干预情况下的购买状况，左上角人群的购买状况在干预后发生了正向变化，如果不对这类人群进行干预，那他有可能是不购买的，但是干预之后的购买概率有极大提升，所以这类人群是我们真正想要触达的用户，即营销敏感人群。而其他人群比如第2类和第3类，在干预前后的购买状况没有变化，所以预算花费可能是浪费。右下角是一类比较特殊的人群，虽然其在干预前后的状态有跳变，但这种跳变不是我们希望看到的，因为确实有一些人群对营销是反感的，所以对这类人群我们应该极力避免触达。Uplift Model正是为了识别我们想要的营销敏感人群。</p>
 </div>
 <div id="uplift-model与response-model区别" class="section level1 hasAnchor" number="2">
@@ -750,21 +758,46 @@ L_{D E S C N} &amp; =L_{E S N}+\gamma_1 \cdot L_{C r o s s T R}+\gamma_0 \cdot L
 <h1><span class="header-section-number">5</span> treatment类型<a href="#treatment%E7%B1%BB%E5%9E%8B" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="二元-treatment" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> 二元 treatment<a href="#%E4%BA%8C%E5%85%83-treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>常见0-1 treatment下的目标值，例如0-1treatment下的转化率，消费金额等</p>
 </div>
 <div id="多元treatment" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> 多元treatment<a href="#%E5%A4%9A%E5%85%83treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>treatment 有多个类别，不一定是连续的递增序列</p>
 </div>
-<div id="连续treatment" class="section level2 hasAnchor" number="5.3">
-<h2><span class="header-section-number">5.3</span> 连续treatment<a href="#%E8%BF%9E%E7%BB%ADtreatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="oridinal-treatment" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> oridinal treatment<a href="#oridinal-treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>例如treatment = 0,1,2,…n treatment是连续的</p>
+<div id="单调性约束" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> 单调性约束<a href="#%E5%8D%95%E8%B0%83%E6%80%A7%E7%BA%A6%E6%9D%9F" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>1）单调性约束通过对单调性的约束建模，让它满足一个基本对应的效应。</p>
+<p>①场景描述在一个外卖优惠券发放的场景中，用户获得的优惠券金额与实际消费金额之间的关系需满足单调性约束。具体表现为：正常逻辑：当优惠券金额增加时，用户的实际消费金额应随之增加或保持不变。例如：获得 2 元优惠券时，用户消费 10 元；获得 3 元优惠券时，用户消费 15 元；获得 4 元优惠券时，用户消费应≥20 元（符合常规“满减”规则）。违反约束的反例：若出现优惠券金额增加但消费金额反而减少的情况，则违反单调性约束。例如：获得 4 元优惠券时，用户实际消费 12 元（低于 3 元券对应的 15 元消费）。</p>
+<p>②约束核心单调性约束要求优惠券力度与用户消费金额之间保持非递减关系，即更高的优惠券金额应对应更高的最低消费阈值（如“满 10 减 2”“满 15 减 3”等）。若出现所述的“4 元券对应 12 元消费”的反例，则说明模型未满足该约束条件，需通过建模调整以确保消费金额随优惠力度递增。</p>
+<p>③约束总结激励力度与响应呈正相关,且激励预测值一定为正。<a href="https://zhuanlan.zhihu.com/p/1919076491385377426">参考DataFunTalk</a></p>
+<p>单调性约束方法</p>
+</div>
+<div id="平滑性约束" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> 平滑性约束<a href="#%E5%B9%B3%E6%BB%91%E6%80%A7%E7%BA%A6%E6%9D%9F" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>①场景描述例如，若当前可用金额为 20 元，则选择花费 15 元（剩余 5 元）或类似小额消费是合理的；而若剩余金额为 20 元时，选择花费 100 元则因远超当前预算且违背常规消费认知被排除。该约束通过限制消费行为的突兀跳跃（如从 20 元直接跳到 100 元的不合理支出），确保消费金额与预算及场景合理性保持连续性和一致性。</p>
+<p>②约束核心在消费决策场景中，当预算为 20 元时，平滑性约束要求消费金额的变化需符合现实逻辑。</p>
+<p>③约束总结响应变化符合 Lipschitz 条件，避免突变,即保证整体预测的曲线上是平滑的。<a href="https://zhuanlan.zhihu.com/p/1919076491385377426">参考DataFunTalk</a></p>
+<p>平滑性约束方法</p>
+</div>
+</div>
+<div id="continuous-treatment" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> continuous treatment<a href="#continuous-treatment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>例如treatment是一个连续的定价</p>
 </div>
 </div>
 <div id="数据收集" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">6</span> 数据收集<a href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="rct数据" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> RCT数据<a href="#rct%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>RCT数据（Randomized controlled trial, 随机实验数据，无偏数据，数据量级小）开ab实验获取</p>
 </div>
-<div id="观测数据" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> 观测数据<a href="#%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ob观测数据" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> OB观测数据<a href="#ob%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>OB数据（线上策略数据，数据量级大）</p>
+<p>RCT数据（Randomized controlled trial, 随机实验数据，无偏数据，数据量级小）与OB数据（线上策略数据，数据量级大）结合起来，利用更大的数据量得到更精确的Uplift的估计，同时保证得到的估计是无偏的，解决很多时候对于ATE变化较小的Treatment，仅使用RCT数据建模，Uplift估计不准确的问题。</p>
 </div>
 </div>
 <div id="纠偏" class="section level1 hasAnchor" number="7">
@@ -880,11 +913,46 @@ g(t)=Y_t^T-\frac{Y_t^C N_t^T}{N_t^C}
 </div>
 <div id="校准" class="section level1 hasAnchor" number="9">
 <h1><span class="header-section-number">9</span> 校准<a href="#%E6%A0%A1%E5%87%86" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>在Uplift模型中，值准是指对个体干预效果（ITE）预估数值的准确性，序准则是指对个体干预效果排序的准确性</p>
+<p><img src="refs/zhizhun_xuzhun.png" /></p>
 <div id="序准" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> 序准<a href="#%E5%BA%8F%E5%87%86" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong><em>序准</em></strong>：常见评估指标有 AUUC（Area Under the Uplift Curve）、Qini 系数等。</p>
+<ul>
+<li><p>AUUC 反映的是 Uplift 模型对个体干预效果的排序能力。它基于预估的 uplift 从大到小排序后，计算不同 top - K 子集下 treatment 组和 control 组的转化数差异，曲线下面积越大，说明排序越准。</p></li>
+<li><p>Qini 系数是对 AUUC 的改进，能处理 treatment 组和 control 组样本数量差异大的情况，更具稳定性。两者都是根据 Uplift Score 排序，衡量所有样本 Uplift Score 的序准，但实际应用中可能因未考虑成本等因素存在局限性。</p></li>
+</ul>
 </div>
 <div id="值准" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> 值准<a href="#%E5%80%BC%E5%87%86" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>在 Uplift 模型的实际落地中，值准（对个体干预效果 ITE 预估数值的准确性） 的核心价值在于：当业务需要精准量化 “干预动作的实际收益 / 成本”，或依赖 “具体收益数值” 做决策时，值准会成为关键评估维度。其应用场景的核心逻辑是 —— 不仅要知道 “谁更值得干预”（序准解决的问题），更要知道 “干预这个人能带来多少具体价值”，从而优化资源分配效率、控制成本或最大化 ROI（投资回报率）。</p>
+<p><strong><em>值准</em></strong>:通常用 PEHE（Precision in Estimation of Heterogeneous Effect）来评估，但实际场景中往往难以获取真实的 ITE。因此，可将数据以预估 lift 排序后分桶，把桶内的 ATE（平均处理效应）和预估的 lift 均值进行对比，进而采用回归任务中的一些指标（如 MSE、R2 - Score 等）来评估值准程度。</p>
+<p>典型的应用场景</p>
+<p><strong><em>1. 精细化资源分配：高成本干预场景（核心诉求：控制成本，避免 “高投入低回报”）</em></strong></p>
+<p>当干预动作本身存在明确且较高的成本（如现金补贴、高价值实物礼品、专属服务人力成本等）时，仅靠序准（排序 “谁的 uplift 更高”）无法判断 “干预此人的收益是否能覆盖成本”，必须依赖值准（精准预估 “干预能带来的净收益”）。</p>
+<p>典型场景：电商平台的大额满减券（如满 200 减 50）、外卖平台的高面额红包（如满 30 减 15）、金融机构的高成本权益（如高端信用卡的机场贵宾厅服务、专属理财顾问）。</p>
+<p>决策逻辑：
+假设某电商平台的大额券成本为 50 元 / 张，通过 Uplift 模型预估用户 A 的 “干预后增量消费收益” 为 80 元（ITE=80），用户 B 的 ITE 为 40 元。
+若仅看序准，A 的排序高于 B，但若不看值准，给 B 发券会导致 “收益 40 元 &lt; 成本 50 元”，净亏损 10 元；
+依赖值准可筛选出 “ITE&gt; 干预成本” 的用户（如仅给 A 发券），确保每一笔干预都能产生正净收益，避免资源浪费。</p>
+<p><strong><em>2. 收益目标驱动的分层运营：明确 “干预力度与收益匹配”（核心诉求：按收益定策略，最大化总收益）</em></strong></p>
+<p>当业务需要针对不同用户群体制定差异化的干预力度（如不同面额的优惠券、不同频次的营销触达），且干预力度与 “预估收益” 强相关时，值准是分层的核心依据 —— 只有精准预估 ITE，才能确定 “给某类用户多大力度的干预最合适”。</p>
+<p>典型场景：在线教育的课程折扣分层（如对 “预估增量报名收益高” 的用户给 9 折，对 “收益中等” 的用户给 9.5 折）、运营商的流量包推送（如对 “预估增量消费 50 元” 的用户推 10 元 10GB 包，对 “预估增量 20 元” 的用户推 5 元 5GB 包）。</p>
+<p>决策逻辑：
+若值准低（如实际 ITE 为 50 元的用户被预估为 20 元），可能导致 “高收益用户被给了低力度干预”（本该推 10 元包却推 5 元包，损失潜在增量），或 “低收益用户被给了高力度干预”（推 10 元包却仅带来 20 元增量，成本占比过高）；
+只有值准高，才能让 “干预力度” 与 “实际收益” 精准匹配，实现 “每一分干预成本都花在能带来对应收益的地方”，最终提升总收益。</p>
+<p><strong><em>3. 干预效果的 ROI 核算：业务复盘与模型迭代（核心诉求：验证干预是否真的盈利，优化模型）</em></strong></p>
+<p>当业务需要量化评估 Uplift 模型驱动的干预活动整体 ROI（如 “这次营销活动花了 100 万，带来了多少增量收益？”），或通过 ROI 反推模型是否需要迭代时，值准是 ROI 计算的基础 —— 只有准确预估 ITE，才能提前测算 “预期 ROI”，并在活动后对比 “实际 ROI 与预期 ROI 的差异”，判断模型是否有效。</p>
+<p>典型场景：零售企业的线下门店促销活动（如针对 “预估增量购买额高” 的会员发放到店满减券，活动后核算 “总增量销售额 - 总券成本” 是否达标）、互联网产品的新功能灰度测试（如对 “预估增量活跃时长高” 的用户开放新功能，测算 “增量活跃带来的广告收益 - 功能开发 / 维护成本”）。</p>
+<p>决策逻辑：
+若值准低（如预期总 ITE 为 200 万，实际仅 100 万），会导致 “预期 ROI=2:1” 的活动实际 ROI 仅 1:1，甚至亏损；
+通过值准评估（如对比 “预估 ITE 分桶的均值” 与 “实际 ATE 分桶的均值”，用 MSE/R² 衡量差异），可及时发现模型预估偏差，进而优化特征或模型结构，提升后续活动的 ROI 准确性。</p>
+<p><strong><em>4. 风险控制类干预：避免 “干预收益无法覆盖风险成本”（核心诉求：平衡收益与风险）</em></strong>
+在部分场景中，干预不仅有 “正向收益”，还可能伴随潜在风险成本（如金融信贷的 “用户逾期风险”、电商的 “用户退货风险”），此时需要通过值准计算 “净干预价值 = 预估 ITE - 预估风险成本”，仅对 “净价值为正” 的用户进行干预。</p>
+<p>典型场景：消费金融的授信额度调整（如对 “预估增量还款收益 100 元、预估逾期成本 30 元” 的用户提额，对 “预估收益 50 元、逾期成本 60 元” 的用户不提额）、电商的高客单价商品推荐（如对 “预估增量购买收益 200 元、预估退货成本 50 元” 的用户推荐，对 “收益 100 元、退货成本 80 元” 的用户不推荐）。
+决策逻辑：
+若值准低（如实际逾期成本 60 元的用户被预估为 30 元），可能导致 “净价值为负的用户被干预”（如给逾期风险高的用户提额，最终损失大于收益）；
+只有值准高，才能精准计算 “净干预价值”，在 “收益” 与 “风险” 之间找到平衡点，避免因预估偏差导致的风险损失。</p>
 </div>
 </div>
 <div id="预算分配" class="section level1 hasAnchor" number="10">
