@@ -745,7 +745,13 @@ $$
 
 ## RCT数据
 
-## 观测数据
+RCT数据（Randomized controlled trial, 随机实验数据，无偏数据，数据量级小）开ab实验获取
+
+## OB观测数据
+
+OB数据（线上策略数据，数据量级大）
+
+RCT数据（Randomized controlled trial, 随机实验数据，无偏数据，数据量级小）与OB数据（线上策略数据，数据量级大）结合起来，利用更大的数据量得到更精确的Uplift的估计，同时保证得到的估计是无偏的，解决很多时候对于ATE变化较小的Treatment，仅使用RCT数据建模，Uplift估计不准确的问题。
 
 
 # 纠偏
@@ -917,5 +923,6 @@ $$
 
 
 https://gaowenxin95.github.io/learn_uplift_model/le_uplift.html
+
 
 
