@@ -909,7 +909,29 @@ $$
 
 ## AUCC
 
-考虑成本的
+考虑成本的,最早由uber提出，商业中可能更加关心是成本。当treatment作用不同人的成本不同时，其campaign的边际成本是不一样的，一般商业活动都有成本约束，考虑成本与收益更加合理。考虑随着成本增量的增加制作收益增量图，得到cost curve，其area under cost curve就是AUCC。
+
+
+![](refs/aucc.png)
+
+- X－axis：成本增量 $\tau^c, \#\left\{T_i=1 \mid S_i>S_i^{p_{t h}}\right\}$
+
+- Y－axis：收益增量 $\tau^r, A T E\left\{x_i \mid S_i>S_i^{p_{t h}}\right\}$
+
+- 用户按质量排序（ $S_i=f\left(X_i\right)$ ，其中 f 与成本和收益相关）
+
+简单来看，当每个 user 成本是一样的话，AUUC和AUCC是等价的，图中斜率都能代表 ROI
+这里的核心是计算用户质量分，不但要考虑收益增量还要考虑成本增量（与评估指标一致），业务目标简单可以表达为 $\max \sum_{i=1}^n \tau^r\left(x_i\right) z_i \quad$ s．t．$\sum_{i=1}^n \tau^c\left(x_i\right) z_i \leq B, z_i \in\{0,1\}$ ，根据 fractional knapsack（Dantzig．1957）简单可以使用贪心 $S_i=\frac{\hat{\tau}^r\left(x_i\right)}{\hat{\tau}^c\left(x_i\right)}$ 进行求解。但是比值可能会放大误差，且无法区分比值为负时我们需求 $\left(\tau^r>0, \tau^c<0\right)$ ，且还需要估计 2 个模型
+
+一个简单的优化，可以参考拉格朗日松弛方法，求解大规模分布式分配问题，把成本约束松弛到目标，保留整数约束，进而可以把问题分解成子问题，通过交替迭代对偶问题与原始子问题进行求解，最终可以得到
+
+$$
+S_i=\hat{\tau}^r\left(x_i\right)-\lambda \hat{\tau}^c\left(x_i\right)=E\left[\left(Y^r(1)-\lambda Y^c(1)\right)-\left(Y^r(0)-\lambda Y^c(0)\right) \mid X=x\right]
+$$
+
+，进而可以直接建模最终目标 $Y^s=Y^r-\lambda Y^c$ ，解决比值问题和预估多个模型带来的问题。
+
+## EOM
 
 
 # 校准

@@ -23,7 +23,7 @@
 <meta name="author" content="高文欣" />
 
 
-<meta name="date" content="2025-09-30" />
+<meta name="date" content="2025-10-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -194,6 +194,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8.2" data-path=""><a href="#qini_score"><i class="fa fa-check"></i><b>8.2</b> QINI_SCORE</a></li>
 <li class="chapter" data-level="8.3" data-path=""><a href="#aucc"><i class="fa fa-check"></i><b>8.3</b> AUCC</a></li>
+<li class="chapter" data-level="8.4" data-path=""><a href="#eom"><i class="fa fa-check"></i><b>8.4</b> EOM</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path=""><a href="#%E6%A0%A1%E5%87%86"><i class="fa fa-check"></i><b>9</b> 校准</a>
 <ul>
@@ -225,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">因果模型学习笔记</h1>
 <p class="author"><em>高文欣</em></p>
-<p class="date"><em>2025-09-30</em></p>
+<p class="date"><em>2025-10-04</em></p>
 </div>
 <div id="le_uplift" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> le_uplift<a href="#le_uplift" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -908,7 +909,23 @@ g(t)=Y_t^T-\frac{Y_t^C N_t^T}{N_t^C}
 </div>
 <div id="aucc" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> AUCC<a href="#aucc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>考虑成本的</p>
+<p>考虑成本的,最早由uber提出，商业中可能更加关心是成本。当treatment作用不同人的成本不同时，其campaign的边际成本是不一样的，一般商业活动都有成本约束，考虑成本与收益更加合理。考虑随着成本增量的增加制作收益增量图，得到cost curve，其area under cost curve就是AUCC。</p>
+<p><img src="refs/aucc.png" /></p>
+<ul>
+<li><p>X－axis：成本增量 <span class="math inline">\(\tau^c, \#\left\{T_i=1 \mid S_i&gt;S_i^{p_{t h}}\right\}\)</span></p></li>
+<li><p>Y－axis：收益增量 <span class="math inline">\(\tau^r, A T E\left\{x_i \mid S_i&gt;S_i^{p_{t h}}\right\}\)</span></p></li>
+<li><p>用户按质量排序（ <span class="math inline">\(S_i=f\left(X_i\right)\)</span> ，其中 f 与成本和收益相关）</p></li>
+</ul>
+<p>简单来看，当每个 user 成本是一样的话，AUUC和AUCC是等价的，图中斜率都能代表 ROI
+这里的核心是计算用户质量分，不但要考虑收益增量还要考虑成本增量（与评估指标一致），业务目标简单可以表达为 <span class="math inline">\(\max \sum_{i=1}^n \tau^r\left(x_i\right) z_i \quad\)</span> s．t．<span class="math inline">\(\sum_{i=1}^n \tau^c\left(x_i\right) z_i \leq B, z_i \in\{0,1\}\)</span> ，根据 fractional knapsack（Dantzig．1957）简单可以使用贪心 <span class="math inline">\(S_i=\frac{\hat{\tau}^r\left(x_i\right)}{\hat{\tau}^c\left(x_i\right)}\)</span> 进行求解。但是比值可能会放大误差，且无法区分比值为负时我们需求 <span class="math inline">\(\left(\tau^r&gt;0, \tau^c&lt;0\right)\)</span> ，且还需要估计 2 个模型</p>
+<p>一个简单的优化，可以参考拉格朗日松弛方法，求解大规模分布式分配问题，把成本约束松弛到目标，保留整数约束，进而可以把问题分解成子问题，通过交替迭代对偶问题与原始子问题进行求解，最终可以得到</p>
+<p><span class="math display">\[
+S_i=\hat{\tau}^r\left(x_i\right)-\lambda \hat{\tau}^c\left(x_i\right)=E\left[\left(Y^r(1)-\lambda Y^c(1)\right)-\left(Y^r(0)-\lambda Y^c(0)\right) \mid X=x\right]
+\]</span></p>
+<p>，进而可以直接建模最终目标 <span class="math inline">\(Y^s=Y^r-\lambda Y^c\)</span> ，解决比值问题和预估多个模型带来的问题。</p>
+</div>
+<div id="eom" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> EOM<a href="#eom" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
 </div>
 <div id="校准" class="section level1 hasAnchor" number="9">
