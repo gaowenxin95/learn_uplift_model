@@ -703,10 +703,20 @@ DragonNet 也是共享表示 + 双头预测的结构，但它额外引入了：<
 <li><p>主损失依旧是预测的平方误差（根据 <span class="math inline">\(T\)</span> 选择对应头）</p></li>
 <li><p>辅损失是交叉嫡（预测 Propensity）</p></li>
 <li><p>可选：加 Targeted Regularization，让模型在训练过程中就利用倾向得分逼近 ATE</p></li>
-<li><p>Tarnet本质就是一个共享底座的t-learner，希望通过共享层在treat和control组的信息中进行trade off，从而达到一种平衡。</p></li>
-<li><p>CFR-net 在Tarnet基础上加入IPM loss，力求去掉混淆变量中和T共性的特征，用剩余的confounder对Y进行回归，来避免observable confounder稀释掉Treatment 对 outcome的相关性。</p></li>
-<li><p>Dragon-net 在Tarnet基础上增加倾向性分数预估正则，即在模型 loss 函数上增加cross_entropy(p(x), t) 让模型能更关注到混淆变量。</p></li>
+<li><p>DragonNet的纠偏原理：</p></li>
 </ul>
+<p>DragonNet的纠偏效果到底来源于什么？为什么只是单纯加了一个treatment-head就能纠偏？是否真正效果来源于正则？要回答这个问题，我们需要先回顾一下因果推断中对特征的经典分类。</p>
+<p><img src="refs/pic1.png" /></p>
+<p>如上图，我们可以把特征分为4个类：</p>
+<ul>
+<li><p>混淆变量X1，既影响T又影响Y，只有把所有的<span class="math inline">\(X_c\)</span>放入模型才能保证无偏。</p></li>
+<li><p>调整变量X2，只影响结果Y，若放进模型里可以提升模型预测的精度。</p></li>
+<li><p>工具变量X3，只影响T，若放进模型里会导致因果效应的估计有偏。</p></li>
+<li><p>其他变量X4，不影响T也不影响Y，放进模型里不会影响无偏性。</p></li>
+</ul>
+<p>（理论上还有一个调节变量，通过影响T来影响Y，此处不介绍）
+可以看到，如果要去除观测数据中的偏置，应该尽可能加强对混淆变量的识别。简单举例：营销场景下，不同活跃度用户发券的概率一般是不一样的，倾向于对不活跃的用户发券来拉活，则用户活跃度即为混淆变量，如果不按照活跃度分层后观测ATE，则会得出结论，发券vs不发券的ATE为负。</p>
+<p>回顾DragonNet的结构变化，加入Propensity-Head后，使得confounder表征层和Propensity-Score紧紧相连在一起，此时表征向量Z(X)则正为既影响T也影响Y的混淆变量（对比TarNet则是调节变量为主），而这正是DragonNet能纠偏的核心原理，正则更多是一种锦上添花。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>class <span class="fu">DragonNet</span>(nn.Module)<span class="sc">:</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    def <span class="fu">__init__</span>(self, input_dim, <span class="at">hidden_dim=</span><span class="dv">200</span>, <span class="at">output_dim=</span><span class="dv">1</span>)<span class="sc">:</span></span>
@@ -786,6 +796,12 @@ DragonNet 也是共享表示 + 双头预测的结构，但它额外引入了：<
 <span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a>    return total_loss, outcome_loss, prop_loss</span>
 <span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a></span>
 <span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a></span></code></pre></div>
+<p>三个基础模型对比</p>
+<ul>
+<li><p>Tarnet本质就是一个共享底座的t-learner，希望通过共享层在treat和control组的信息中进行trade off，从而达到一种平衡。</p></li>
+<li><p>CFR-net 在Tarnet基础上加入IPM loss，力求去掉混淆变量中和T共性的特征，用剩余的confounder对Y进行回归，来避免observable confounder稀释掉Treatment 对 outcome的相关性。</p></li>
+<li><p>Dragon-net 在Tarnet基础上增加倾向性分数预估正则，即在模型 loss 函数上增加cross_entropy(p(x), t) 让模型能更关注到混淆变量。</p></li>
+</ul>
 </div>
 <div id="efin" class="section level3 hasAnchor" number="4.3.4">
 <h3><span class="header-section-number">4.3.4</span> EFIN<a href="#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
