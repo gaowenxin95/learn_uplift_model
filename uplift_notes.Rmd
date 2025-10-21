@@ -474,24 +474,249 @@ $$
 $$
 \underset{h, \Phi}{\arg \min } \frac{1}{N} \sum_{i=1}^N \operatorname{MSE}(Y_i\left(T_i\right), \underbrace{h\left(\Phi\left(X_i\right), T_i\right)}_{\hat{Y}_i\left(T_i\right)})+\lambda \underbrace{\mathcal{R}(h)}_{L_2}
 $$
+
+这个公式的核心是 **“带正则化的最小均方误差优化”**：通过调整函数 $h$ 和特征映射 $Φ$，让模型对所有样本的 “预测值与真实值的均方误差之和” 尽可能小，同时通过正则化项 $λR(h)$限制 $h$的复杂度，避免模型过度拟合训练数据（即保证模型在新数据上也能有好的表现）
+
+
+Tarnet本质就是一个共享底座的t-learner，共享层学习共有的信息表征，再利用该共享表征去分别学习treat组和control的输出结果，共享层就会在treat和control组的信息中进行trade off，从而达到一种平衡。
+
 ```r
-def regression_loss(concat_true, concat_pred):
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-    y_true = concat_true[:, 0]
-    t_true = concat_true[:, 1]
+class TARNet(nn.Module):
+    def __init__(self, input_dim, hidden_dim=200, output_dim=1):
+        super(TARNet, self).__init__()
+        
+        # 共享表示层
+        self.shared_layers = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3)
+        )
+        
+        # 控制组预测头
+        self.y0_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim//2),
+            nn.ReLU(),
+            nn.Linear(hidden_dim//2, output_dim)
+        )
+        
+        # 处理组预测头  
+        self.y1_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim//2),
+            nn.ReLU(),
+            nn.Linear(hidden_dim//2, output_dim)
+        )
+        
+    def forward(self, x):
+        # 共享表示
+        phi = self.shared_layers(x)
+        
+        # 分别预测两种潜在结果
+        y0_pred = self.y0_head(phi)
+        y1_pred = self.y1_head(phi)
+        
+        return y0_pred, y1_pred, phi
 
-    y0_pred = concat_pred[:, 0]
-    y1_pred = concat_pred[:, 1]
-
-    loss0 = tf.reduce_sum((1. - t_true) * tf.square(y_true - y0_pred))
-    loss1 = tf.reduce_sum(t_true * tf.square(y_true - y1_pred))
-
-    return loss0 + loss1
+def tarnet_loss(y0_pred, y1_pred, y_true, t, phi, alpha=1.0):
+    """
+    TARNet损失函数,alpha=0即为TARNet,alpha>0即为CFRNet
+    
+    Args:
+        y0_pred: 控制组预测
+        y1_pred: 处理组预测  
+        y_true: 真实结果
+        t: 处理指示符 (0或1)
+        phi: 学习到的表示
+        alpha: 平衡正则化强度
+    """
+    
+    # 预测损失
+    y_pred = t * y1_pred + (1 - t) * y0_pred
+    pred_loss = F.mse_loss(y_pred.squeeze(), y_true)
+    
+    # 表示平衡正则化（简化版）
+    # 这里使用MMD距离或者其他分布距离度量
+    phi_treated = phi[t == 1]
+    phi_control = phi[t == 0]
+    
+    if len(phi_treated) > 0 and len(phi_control) > 0:
+        balance_loss = torch.norm(phi_treated.mean(0) - phi_control.mean(0))
+    else:
+        balance_loss = torch.tensor(0.0)
+    
+    total_loss = pred_loss + alpha * balance_loss
+    
+    return total_loss, pred_loss, balance_loss
 
 ```
 
+###  CFRnet 
+
+tarNet+IPM loss
+
+CFRnet的核心思想其实就是在tarnet的基础上加入额外的loss，修正衡量treated组和control组的分布距离，进一步平衡treated和control组在表示空间中的分布，该距离被称为integral probability metrics（IPM）。论文中使用了两种IPM包括Maximum Mean Discrepency和Wasserstein distance。当两个组分布平衡时，满足
+，IPM为0，即代表treat组和control组分布一致。
+
+
+![](refs/crfnet.png)
+
+
+损失函数：就是tarnet 损失函数基础上加入IPM loss。
+
+$$
+\mathcal{L}=\mathcal{L}_{\text {pred }}+\alpha \cdot \operatorname{IPM}\left(R_0, R_1\right)
+$$
+
+-  $\mathcal{L}_{\text {pred }}$ ：预测 $Y$ 的均方误差（只对所观测到的分支计算）
+- IPM：Integral Probability Metric，用来约束处理组／对照组的表示分布差异（常见是 MMD 或 Wasserstein）。
+
+Note：CFRnet 加入 IPM loss，理论上就是力求去掉混淆变量中和T相关（共线）的特征，用剩余的混淆变量对Y进行回归，来避免 observable confounder稀释掉Treatment 对 outcome的相关性。但是实际使用中真的有效果么？这里按下不表，读者们可以思考下这种方式可能带来的影响。
+
 
 ### Dragonnet
+
+DragonNet：TarNet + Propensity Head
+DragonNet 也是共享表示 + 双头预测的结构，但它额外引入了：
+
+第三个预测头：Propensity Head，用来显式估计处理分配概率 
+。
+这么做的好处：
+
+在端到端训练中同时学习倾向得分（Propensity Score）和潜在结果预测；
+用倾向得分在损失里引入Targeted Regularization，提升因果效应估计的无偏性。
+
+![](refs/dragonnet.png)
+
+损失函数：
+
+$$
+\hat{R}(\theta ; X)=\frac{1}{n} \sum_i^{\nabla}\left[\left(Q^{\mathrm{nn}}\left(t_i, x_i ; \theta\right)-y_i\right)^2+\alpha \operatorname{CrossEntropy}\left(g^{\mathrm{nn}}\left(x_i ; \theta\right), t_i\right)\right]
+$$
+
+
+两个 outcome 头的 mse loss＋treatment 因子的ce loss
+
+基于半参估计的理论性质，论文还引入了 Targeted Regularization损失正则项：
+
+$$
+\varphi(y, t, x ; Q, g, \psi)=Q(1, x)-Q(0, x)+\left(\frac{t}{g(x)}-\frac{1-t}{1-g(x)}\right)\{y-Q(t, x)\}-\psi .
+$$
+
+
+最终loss：
+
+$$
+\mathcal{L}=\mathcal{L}_{\text {pred }}+\alpha \cdot \mathcal{L}_{\text {propensity }}+\beta \cdot \mathcal{L}_{\text {targetedRegularization }}
+$$
+
+
+DragonNet 的技巧是：
+
+- 输出 $\hat{Y}^0, \hat{Y}^1, \hat{e}$
+
+- 主损失依旧是预测的平方误差（根据 $T$ 选择对应头）
+
+- 辅损失是交叉嫡（预测 Propensity）
+
+- 可选：加 Targeted Regularization，让模型在训练过程中就利用倾向得分逼近 ATE
+
+
+- Tarnet本质就是一个共享底座的t-learner，希望通过共享层在treat和control组的信息中进行trade off，从而达到一种平衡。
+
+- CFR-net 在Tarnet基础上加入IPM loss，力求去掉混淆变量中和T共性的特征，用剩余的confounder对Y进行回归，来避免observable confounder稀释掉Treatment 对 outcome的相关性。
+
+- Dragon-net 在Tarnet基础上增加倾向性分数预估正则，即在模型 loss 函数上增加cross_entropy(p(x), t) 让模型能更关注到混淆变量。
+
+
+```r
+
+class DragonNet(nn.Module):
+    def __init__(self, input_dim, hidden_dim=200, output_dim=1):
+        super(DragonNet, self).__init__()
+        
+        # 共享表示层
+        self.shared_layers = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.ELU(),
+            nn.Dropout(0.1),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ELU(),
+            nn.Dropout(0.1)
+        )
+        
+        # 倾向性分数预测头
+        self.propensity_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim//2),
+            nn.ELU(),
+            nn.Linear(hidden_dim//2, 1),
+            nn.Sigmoid()
+        )
+        
+        # 控制组预测头
+        self.y0_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim//2),
+            nn.ELU(), 
+            nn.Linear(hidden_dim//2, output_dim)
+        )
+        
+        # 处理组预测头
+        self.y1_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim//2),
+            nn.ELU(),
+            nn.Linear(hidden_dim//2, output_dim)
+        )
+        
+    def forward(self, x):
+        # 共享表示
+        phi = self.shared_layers(x)
+        
+        # 三个预测头
+        propensity = self.propensity_head(phi)
+        y0_pred = self.y0_head(phi) 
+        y1_pred = self.y1_head(phi)
+        
+        return propensity, y0_pred, y1_pred, phi
+
+def dragonnet_loss(propensity, y0_pred, y1_pred, y_true, t, 
+                   alpha=1.0, beta=1.0):
+    """
+    DragonNet损失函数
+    
+    Args:
+        propensity: 倾向性分数预测
+        y0_pred: 控制组预测
+        y1_pred: 处理组预测
+        y_true: 真实结果
+        t: 处理指示符
+        alpha: 倾向性分数损失权重
+        beta: 正则化权重
+    """
+    
+    # 倾向性分数损失
+    prop_loss = F.binary_cross_entropy(propensity.squeeze(), t.float())
+    
+    # 结果预测损失
+    y_pred = t * y1_pred + (1 - t) * y0_pred
+    outcome_loss = F.mse_loss(y_pred.squeeze(), y_true)
+    
+    # 正则化项（基于倾向性分数的加权）
+    weights = t / propensity.squeeze() + (1 - t) / (1 - propensity.squeeze())
+    weighted_outcome_loss = (weights * (y_pred.squeeze() - y_true) ** 2).mean()
+    
+    total_loss = outcome_loss + alpha * prop_loss + beta * weighted_outcome_loss
+    
+    return total_loss, outcome_loss, prop_loss
+
+
+
+```
+
 
 ### EFIN
 

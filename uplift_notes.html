@@ -23,7 +23,7 @@
 <meta name="author" content="高文欣" />
 
 
-<meta name="date" content="2025-10-04" />
+<meta name="date" content="2025-10-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,9 +160,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path=""><a href="#%E6%B7%B1%E5%BA%A6%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><i class="fa fa-check"></i><b>4.3</b> 深度因果模型</a>
 <ul>
 <li class="chapter" data-level="4.3.1" data-path=""><a href="#tarnet"><i class="fa fa-check"></i><b>4.3.1</b> TARNET</a></li>
-<li class="chapter" data-level="4.3.2" data-path=""><a href="#dragonnet"><i class="fa fa-check"></i><b>4.3.2</b> Dragonnet</a></li>
-<li class="chapter" data-level="4.3.3" data-path=""><a href="#efin"><i class="fa fa-check"></i><b>4.3.3</b> EFIN</a></li>
-<li class="chapter" data-level="4.3.4" data-path=""><a href="#descn"><i class="fa fa-check"></i><b>4.3.4</b> DESCN</a></li>
+<li class="chapter" data-level="4.3.2" data-path=""><a href="#cfrnet"><i class="fa fa-check"></i><b>4.3.2</b> CFRnet</a></li>
+<li class="chapter" data-level="4.3.3" data-path=""><a href="#dragonnet"><i class="fa fa-check"></i><b>4.3.3</b> Dragonnet</a></li>
+<li class="chapter" data-level="4.3.4" data-path=""><a href="#efin"><i class="fa fa-check"></i><b>4.3.4</b> EFIN</a></li>
+<li class="chapter" data-level="4.3.5" data-path=""><a href="#descn"><i class="fa fa-check"></i><b>4.3.5</b> DESCN</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path=""><a href="#treatment%E7%B1%BB%E5%9E%8B"><i class="fa fa-check"></i><b>5</b> treatment类型</a>
@@ -226,7 +227,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">因果模型学习笔记</h1>
 <p class="author"><em>高文欣</em></p>
-<p class="date"><em>2025-10-04</em></p>
+<p class="date"><em>2025-10-21</em></p>
 </div>
 <div id="le_uplift" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> le_uplift<a href="#le_uplift" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -582,27 +583,215 @@ DML提出直接拟合ATE，并利用残差消偏
 <span class="math display">\[
 \underset{h, \Phi}{\arg \min } \frac{1}{N} \sum_{i=1}^N \operatorname{MSE}(Y_i\left(T_i\right), \underbrace{h\left(\Phi\left(X_i\right), T_i\right)}_{\hat{Y}_i\left(T_i\right)})+\lambda \underbrace{\mathcal{R}(h)}_{L_2}
 \]</span></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>def <span class="fu">regression_loss</span>(concat_true, concat_pred)<span class="sc">:</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    y_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">0</span>]</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    t_true <span class="ot">=</span> concat_true[<span class="sc">:</span>, <span class="dv">1</span>]</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    y0_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">0</span>]</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    y1_pred <span class="ot">=</span> concat_pred[<span class="sc">:</span>, <span class="dv">1</span>]</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    loss0 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>((<span class="fl">1.</span> <span class="sc">-</span> t_true) <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y0_pred))</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    loss1 <span class="ot">=</span> <span class="fu">tf.reduce_sum</span>(t_true <span class="sc">*</span> <span class="fu">tf.square</span>(y_true <span class="sc">-</span> y1_pred))</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    return loss0 <span class="sc">+</span> loss1</span></code></pre></div>
+<p>这个公式的核心是 <strong>“带正则化的最小均方误差优化”</strong>：通过调整函数 <span class="math inline">\(h\)</span> 和特征映射 <span class="math inline">\(Φ\)</span>，让模型对所有样本的 “预测值与真实值的均方误差之和” 尽可能小，同时通过正则化项 <span class="math inline">\(λR(h)\)</span>限制 <span class="math inline">\(h\)</span>的复杂度，避免模型过度拟合训练数据（即保证模型在新数据上也能有好的表现）</p>
+<p>Tarnet本质就是一个共享底座的t-learner，共享层学习共有的信息表征，再利用该共享表征去分别学习treat组和control的输出结果，共享层就会在treat和control组的信息中进行trade off，从而达到一种平衡。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>import torch</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>import torch.nn as nn</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>import torch.nn.functional as F</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>class <span class="fu">TARNet</span>(nn.Module)<span class="sc">:</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    def <span class="fu">__init__</span>(self, input_dim, <span class="at">hidden_dim=</span><span class="dv">200</span>, <span class="at">output_dim=</span><span class="dv">1</span>)<span class="sc">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>        <span class="fu">super</span>(TARNet, self)<span class="fu">.__init__</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>        </span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>        <span class="co"># 共享表示层</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>        self.shared_layers <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(input_dim, hidden_dim),</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>            <span class="fu">nn.ReLU</span>(),</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>            <span class="fu">nn.Dropout</span>(<span class="fl">0.3</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim),</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>            <span class="fu">nn.ReLU</span>(),</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>            <span class="fu">nn.Dropout</span>(<span class="fl">0.3</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>        )</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>        </span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>        <span class="co"># 控制组预测头</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>        self.y0_head <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>),</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>            <span class="fu">nn.ReLU</span>(),</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>, output_dim)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>        )</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>        </span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>        <span class="co"># 处理组预测头  </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>        self.y1_head <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>),</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>            <span class="fu">nn.ReLU</span>(),</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>, output_dim)</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>        )</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>        </span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>    def <span class="fu">forward</span>(self, x)<span class="sc">:</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>        <span class="co"># 共享表示</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a>        phi <span class="ot">=</span> <span class="fu">self.shared_layers</span>(x)</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a>        </span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>        <span class="co"># 分别预测两种潜在结果</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a>        y0_pred <span class="ot">=</span> <span class="fu">self.y0_head</span>(phi)</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>        y1_pred <span class="ot">=</span> <span class="fu">self.y1_head</span>(phi)</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>        </span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>        return y0_pred, y1_pred, phi</span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a>def <span class="fu">tarnet_loss</span>(y0_pred, y1_pred, y_true, t, phi, <span class="at">alpha=</span><span class="fl">1.0</span>)<span class="sc">:</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a>    <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="st">    TARNet损失函数,alpha=0即为TARNet,alpha&gt;0即为CFRNet</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="st">    </span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="st">    Args:</span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="st">        y0_pred: 控制组预测</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="st">        y1_pred: 处理组预测  </span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="st">        y_true: 真实结果</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="st">        t: 处理指示符 (0或1)</span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="st">        phi: 学习到的表示</span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="st">        alpha: 平衡正则化强度</span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a>    </span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a>    <span class="co"># 预测损失</span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a>    y_pred <span class="ot">=</span> t <span class="sc">*</span> y1_pred <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> t) <span class="sc">*</span> y0_pred</span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a>    pred_loss <span class="ot">=</span> <span class="fu">F.mse_loss</span>(<span class="fu">y_pred.squeeze</span>(), y_true)</span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a>    </span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a>    <span class="co"># 表示平衡正则化（简化版）</span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a>    <span class="co"># 这里使用MMD距离或者其他分布距离度量</span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a>    phi_treated <span class="ot">=</span> phi[t <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a>    phi_control <span class="ot">=</span> phi[t <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a>    </span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a>    <span class="cf">if</span> <span class="fu">len</span>(phi_treated) <span class="sc">&gt;</span> <span class="dv">0</span> and <span class="fu">len</span>(phi_control) <span class="sc">&gt;</span> <span class="dv">0</span><span class="sc">:</span></span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a>        balance_loss <span class="ot">=</span> <span class="fu">torch.norm</span>(<span class="fu">phi_treated.mean</span>(<span class="dv">0</span>) <span class="sc">-</span> <span class="fu">phi_control.mean</span>(<span class="dv">0</span>))</span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a>    <span class="cf">else</span><span class="sc">:</span></span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a>        balance_loss <span class="ot">=</span> <span class="fu">torch.tensor</span>(<span class="fl">0.0</span>)</span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a>    </span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a>    total_loss <span class="ot">=</span> pred_loss <span class="sc">+</span> alpha <span class="sc">*</span> balance_loss</span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a>    </span>
+<span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a>    return total_loss, pred_loss, balance_loss</span></code></pre></div>
 </div>
-<div id="dragonnet" class="section level3 hasAnchor" number="4.3.2">
-<h3><span class="header-section-number">4.3.2</span> Dragonnet<a href="#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="cfrnet" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> CFRnet<a href="#cfrnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>tarNet+IPM loss</p>
+<p>CFRnet的核心思想其实就是在tarnet的基础上加入额外的loss，修正衡量treated组和control组的分布距离，进一步平衡treated和control组在表示空间中的分布，该距离被称为integral probability metrics（IPM）。论文中使用了两种IPM包括Maximum Mean Discrepency和Wasserstein distance。当两个组分布平衡时，满足
+，IPM为0，即代表treat组和control组分布一致。</p>
+<p><img src="refs/crfnet.png" /></p>
+<p>损失函数：就是tarnet 损失函数基础上加入IPM loss。</p>
+<p><span class="math display">\[
+\mathcal{L}=\mathcal{L}_{\text {pred }}+\alpha \cdot \operatorname{IPM}\left(R_0, R_1\right)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\mathcal{L}_{\text {pred }}\)</span> ：预测 <span class="math inline">\(Y\)</span> 的均方误差（只对所观测到的分支计算）</li>
+<li>IPM：Integral Probability Metric，用来约束处理组／对照组的表示分布差异（常见是 MMD 或 Wasserstein）。</li>
+</ul>
+<p>Note：CFRnet 加入 IPM loss，理论上就是力求去掉混淆变量中和T相关（共线）的特征，用剩余的混淆变量对Y进行回归，来避免 observable confounder稀释掉Treatment 对 outcome的相关性。但是实际使用中真的有效果么？这里按下不表，读者们可以思考下这种方式可能带来的影响。</p>
 </div>
-<div id="efin" class="section level3 hasAnchor" number="4.3.3">
-<h3><span class="header-section-number">4.3.3</span> EFIN<a href="#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="dragonnet" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Dragonnet<a href="#dragonnet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>DragonNet：TarNet + Propensity Head
+DragonNet 也是共享表示 + 双头预测的结构，但它额外引入了：</p>
+<p>第三个预测头：Propensity Head，用来显式估计处理分配概率
+。
+这么做的好处：</p>
+<p>在端到端训练中同时学习倾向得分（Propensity Score）和潜在结果预测；
+用倾向得分在损失里引入Targeted Regularization，提升因果效应估计的无偏性。</p>
+<p><img src="refs/dragonnet.png" /></p>
+<p>损失函数：</p>
+<p><span class="math display">\[
+\hat{R}(\theta ; X)=\frac{1}{n} \sum_i^{\nabla}\left[\left(Q^{\mathrm{nn}}\left(t_i, x_i ; \theta\right)-y_i\right)^2+\alpha \operatorname{CrossEntropy}\left(g^{\mathrm{nn}}\left(x_i ; \theta\right), t_i\right)\right]
+\]</span></p>
+<p>两个 outcome 头的 mse loss＋treatment 因子的ce loss</p>
+<p>基于半参估计的理论性质，论文还引入了 Targeted Regularization损失正则项：</p>
+<p><span class="math display">\[
+\varphi(y, t, x ; Q, g, \psi)=Q(1, x)-Q(0, x)+\left(\frac{t}{g(x)}-\frac{1-t}{1-g(x)}\right)\{y-Q(t, x)\}-\psi .
+\]</span></p>
+<p>最终loss：</p>
+<p><span class="math display">\[
+\mathcal{L}=\mathcal{L}_{\text {pred }}+\alpha \cdot \mathcal{L}_{\text {propensity }}+\beta \cdot \mathcal{L}_{\text {targetedRegularization }}
+\]</span></p>
+<p>DragonNet 的技巧是：</p>
+<ul>
+<li><p>输出 <span class="math inline">\(\hat{Y}^0, \hat{Y}^1, \hat{e}\)</span></p></li>
+<li><p>主损失依旧是预测的平方误差（根据 <span class="math inline">\(T\)</span> 选择对应头）</p></li>
+<li><p>辅损失是交叉嫡（预测 Propensity）</p></li>
+<li><p>可选：加 Targeted Regularization，让模型在训练过程中就利用倾向得分逼近 ATE</p></li>
+<li><p>Tarnet本质就是一个共享底座的t-learner，希望通过共享层在treat和control组的信息中进行trade off，从而达到一种平衡。</p></li>
+<li><p>CFR-net 在Tarnet基础上加入IPM loss，力求去掉混淆变量中和T共性的特征，用剩余的confounder对Y进行回归，来避免observable confounder稀释掉Treatment 对 outcome的相关性。</p></li>
+<li><p>Dragon-net 在Tarnet基础上增加倾向性分数预估正则，即在模型 loss 函数上增加cross_entropy(p(x), t) 让模型能更关注到混淆变量。</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>class <span class="fu">DragonNet</span>(nn.Module)<span class="sc">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    def <span class="fu">__init__</span>(self, input_dim, <span class="at">hidden_dim=</span><span class="dv">200</span>, <span class="at">output_dim=</span><span class="dv">1</span>)<span class="sc">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>        <span class="fu">super</span>(DragonNet, self)<span class="fu">.__init__</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>        </span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>        <span class="co"># 共享表示层</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>        self.shared_layers <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(input_dim, hidden_dim),</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>            <span class="fu">nn.ELU</span>(),</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>            <span class="fu">nn.Dropout</span>(<span class="fl">0.1</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim),</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>            <span class="fu">nn.ELU</span>(),</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>            <span class="fu">nn.Dropout</span>(<span class="fl">0.1</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>        )</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>        </span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>        <span class="co"># 倾向性分数预测头</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>        self.propensity_head <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>),</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>            <span class="fu">nn.ELU</span>(),</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>            <span class="fu">nn.Sigmoid</span>()</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>        )</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>        </span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        <span class="co"># 控制组预测头</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>        self.y0_head <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>),</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>            <span class="fu">nn.ELU</span>(), </span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>, output_dim)</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>        )</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>        </span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>        <span class="co"># 处理组预测头</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>        self.y1_head <span class="ot">=</span> <span class="fu">nn.Sequential</span>(</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim, hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>),</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>            <span class="fu">nn.ELU</span>(),</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>            <span class="fu">nn.Linear</span>(hidden_dim<span class="sc">/</span><span class="er">/</span><span class="dv">2</span>, output_dim)</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>        )</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>        </span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>    def <span class="fu">forward</span>(self, x)<span class="sc">:</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>        <span class="co"># 共享表示</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a>        phi <span class="ot">=</span> <span class="fu">self.shared_layers</span>(x)</span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a>        </span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a>        <span class="co"># 三个预测头</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a>        propensity <span class="ot">=</span> <span class="fu">self.propensity_head</span>(phi)</span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a>        y0_pred <span class="ot">=</span> <span class="fu">self.y0_head</span>(phi) </span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a>        y1_pred <span class="ot">=</span> <span class="fu">self.y1_head</span>(phi)</span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a>        </span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a>        return propensity, y0_pred, y1_pred, phi</span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a>def <span class="fu">dragonnet_loss</span>(propensity, y0_pred, y1_pred, y_true, t, </span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a>                   <span class="at">alpha=</span><span class="fl">1.0</span>, <span class="at">beta=</span><span class="fl">1.0</span>)<span class="sc">:</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a>    <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="st">    DragonNet损失函数</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="st">    </span></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="st">    Args:</span></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="st">        propensity: 倾向性分数预测</span></span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="st">        y0_pred: 控制组预测</span></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="st">        y1_pred: 处理组预测</span></span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a><span class="st">        y_true: 真实结果</span></span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="st">        t: 处理指示符</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="st">        alpha: 倾向性分数损失权重</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="st">        beta: 正则化权重</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a>    </span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a>    <span class="co"># 倾向性分数损失</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a>    prop_loss <span class="ot">=</span> <span class="fu">F.binary_cross_entropy</span>(<span class="fu">propensity.squeeze</span>(), <span class="fu">t.float</span>())</span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a>    </span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a>    <span class="co"># 结果预测损失</span></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a>    y_pred <span class="ot">=</span> t <span class="sc">*</span> y1_pred <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> t) <span class="sc">*</span> y0_pred</span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a>    outcome_loss <span class="ot">=</span> <span class="fu">F.mse_loss</span>(<span class="fu">y_pred.squeeze</span>(), y_true)</span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a>    </span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a>    <span class="co"># 正则化项（基于倾向性分数的加权）</span></span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a>    weights <span class="ot">=</span> t <span class="sc">/</span> <span class="fu">propensity.squeeze</span>() <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> t) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">propensity.squeeze</span>())</span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a>    weighted_outcome_loss <span class="ot">=</span> (weights <span class="sc">*</span> (<span class="fu">y_pred.squeeze</span>() <span class="sc">-</span> y_true) <span class="sc">**</span> <span class="dv">2</span>)<span class="fu">.mean</span>()</span>
+<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a>    </span>
+<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a>    total_loss <span class="ot">=</span> outcome_loss <span class="sc">+</span> alpha <span class="sc">*</span> prop_loss <span class="sc">+</span> beta <span class="sc">*</span> weighted_outcome_loss</span>
+<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a>    </span>
+<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a>    return total_loss, outcome_loss, prop_loss</span>
+<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a></span>
+<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a></span></code></pre></div>
 </div>
-<div id="descn" class="section level3 hasAnchor" number="4.3.4">
-<h3><span class="header-section-number">4.3.4</span> DESCN<a href="#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="efin" class="section level3 hasAnchor" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> EFIN<a href="#efin" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="descn" class="section level3 hasAnchor" number="4.3.5">
+<h3><span class="header-section-number">4.3.5</span> DESCN<a href="#descn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>模型整体有两部分结构组成ESN网络+Xnetwork网络</p>
 <div class="float">
 <img src="refs/descn.png" alt="descn" />
